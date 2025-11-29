@@ -1,0 +1,266 @@
+/* ============================================================
+   GLOBAL STYLES
+   - Reset margins/padding
+   - Set base font and colors
+============================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #ffffff; /* White background */
+  color: #333333; /* Dark gray text for readability */
+}
+
+/* ============================================================
+   MAIN CONTAINER (Attack Simulator Box)
+   - Centers the game card on the page
+   - Adds rounded corners and shadow
+============================================================ */
+.attack-simulator {
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 25px;
+  background-color: #fafafa; /* Light gray background */
+  border: 1px solid #eeeeee;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(219, 87, 10, 0.3); /* Orange glow */
+  text-align: center;
+}
+
+/* ============================================================
+   HEADINGS & PARAGRAPHS
+   - Consistent font sizes and spacing
+============================================================ */
+.attack-simulator h2 {
+  color: #db570a; /* Orange heading color */
+  margin-bottom: 25px;
+  font-size: 30px;
+}
+
+.attack-simulator p {
+  font-size: 18px;
+  margin-bottom: 25px;
+  line-height: 1.5; /* Better readability */
+}
+
+/* ============================================================
+   OPTIONS SECTION (Answer Buttons)
+   - Vertical list of possible answers
+   - Highlighting for hover, selected, correct, incorrect
+============================================================ */
+.options {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 15px; /* Space between options */
+}
+
+.option {
+  background-color: #fff4ec; /* Light orange background */
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid #db570a;
+  transition: all 0.3s ease;
+  text-align: left;
+  color: #333333;
+  box-shadow: 0 4px 10px rgba(219, 87, 10, 0.2);
+}
+
+/* Hover effect for options */
+.option:hover {
+  background-color: #ffe0cc;
+}
+
+/* Selected answer (highlighted orange) */
+.option.selected {
+  background-color: #db570a;
+  color: #ffffff;
+}
+
+/* Correct answer turns green */
+.option.correct {
+  background-color: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+/* Incorrect answer turns red */
+.option.incorrect {
+  background-color: #ff3333;
+  color: white;
+}
+
+/* ============================================================
+   SUBMIT BUTTON
+   - Orange theme consistent with platform
+   - Hover + disabled states
+============================================================ */
+.submit-btn {
+  background-color: #db6c0a !important; /* Orange button */
+  color: #ffffff !important; /* White text */
+  border: none !important;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 3px 10px rgba(219, 108, 10, 0.2);
+}
+
+/* Hover effect for submit */
+.submit-btn:hover {
+  background-color: #b84a08 !important; /* Darker orange */
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(219, 87, 10, 0.4);
+}
+
+/* Disabled state for submit */
+.submit-btn:disabled {
+  background-color: #f1c093 !important; /* Light orange */
+  color: #fff;
+  opacity: 0.9;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ============================================================
+   FEEDBACK MESSAGES
+   - Shows “Correct!” or “Incorrect” with color cues
+============================================================ */
+.feedback {
+  font-size: 18px;
+  margin-top: 25px;
+  font-weight: bold;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Green for correct feedback */
+.feedback.correct {
+  color: #00ff00;
+}
+
+/* Red for incorrect feedback */
+.feedback.incorrect {
+  color: #ff3333;
+}
+
+/* ============================================================
+   BUTTON CONTAINER & BACK LINK
+   - Positions Submit / Restart / Return buttons
+============================================================ */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* “Return to Homepage” link */
+.back-button {
+  color: #db570a;
+  margin-top: 2px;
+}
+
+.back-button:hover {
+  text-decoration: underline;
+}
+
+/* ============================================================
+   RESPONSIVE DESIGN
+   - Adjust layout and font sizes for tablets and mobiles
+============================================================ */
+
+/* Tablets */
+@media (max-width: 768px) {
+  .attack-simulator {
+    max-width: 90%;
+    margin: 120px auto;
+    padding: 20px;
+  }
+
+  .attack-simulator h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .attack-simulator p {
+    font-size: 16px;
+  }
+
+  .options {
+    gap: 10px;
+  }
+
+  .option {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  .submit-btn {
+    font-size: 16px;
+    padding: 10px 25px;
+  }
+}
+
+/* Mobile Phones */
+@media (max-width: 480px) {
+  .attack-simulator {
+    max-width: 95%;
+    margin: 130px auto;
+    padding: 15px;
+  }
+
+  .attack-simulator h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .attack-simulator p {
+    font-size: 14px;
+  }
+
+  .options {
+    gap: 8px;
+  }
+
+  .option {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .submit-btn {
+    font-size: 14px;
+    padding: 8px 20px;
+  }
+}
+/* ------------------------------
+   Restart Game Button
+   - Makes text visible on orange background
+------------------------------ */
+.restart-btn {
+  background-color: #db6c0a !important; /* Same orange as theme */
+  color: #ffffff !important;            /* Black text for visibility */
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 3px 10px rgba(219, 108, 10, 0.2);
+}
+
+/* Hover effect for Restart button */
+.restart-btn:hover {
+  background-color: #b84a08 !important; /* Darker orange hover */
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(219, 87, 10, 0.4);
+}

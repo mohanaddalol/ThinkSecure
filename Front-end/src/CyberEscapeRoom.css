@@ -1,0 +1,256 @@
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Courier New', Courier, monospace; /* Hacker-style font */
+  background-color: #ffffff;
+  color: #333333;
+}
+
+/* Escape Room Container */
+.escape-room {
+  max-width: 600px;
+  margin: 100px auto; /* Adjusted margin for proper spacing below navbar */
+  padding: 25px;
+  background-color: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 5px 25px rgba(219, 87, 10, 0.3); /* Orange glow */
+  text-align: center;
+  color: #333333;
+}
+
+/* Heading Styling */
+.escape-room h2 {
+  color: #db570a; /* Orange heading */
+  margin-bottom: 25px;
+  font-size: 30px;
+  text-shadow: 0 0 5px rgba(219, 87, 10, 0.4); /* Orange glow effect */
+}
+
+/* Paragraph Styling */
+.escape-room p {
+  font-size: 18px;
+  margin-bottom: 25px; /* Consistent spacing */
+  line-height: 1.5; /* Better readability */
+}
+
+/* Puzzle Section */
+.puzzle p {
+  font-size: 20px;
+  margin-bottom: 25px;
+  text-align: left;
+  padding-left: 15px; /* Align with question text */
+}
+
+/* Options Section */
+.options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Left-align options */
+  gap: 15px; /* Consistent spacing */
+  margin-bottom: 25px;
+  padding-left: 15px;
+}
+
+.option {
+  background: #fff4ec; /* Light orange tint */
+  padding: 12px 20px;
+  width: 100%; /* Full width for responsiveness */
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid #db570a; /* Orange border */
+  transition: all 0.3s ease; /* Smooth transition */
+  box-shadow: 0 4px 10px rgba(219, 87, 10, 0.2); /* Subtle orange shadow */
+}
+
+.option:hover {
+  background: #ffe0cc; /* Darker orange tint on hover */
+}
+
+.option.selected {
+  background-color: #db570a; /* Solid orange for selected */
+  color: #ffffff;
+}
+
+.option.correct {
+  background-color: #28a745; /* Keep correct green for feedback */
+  color: white;
+  border-color: #28a745;
+}
+
+.option.incorrect {
+  background-color: #dc3545; /* Keep incorrect red for feedback */
+  color: white;
+  border-color: #dc3545;
+}
+
+/* Buttons */
+.puzzle button {
+  background-color: #db570a; /* Orange button */
+  color: #ffffff;
+  padding: 12px 30px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 8px;
+  margin-top: 25px;
+  transition: all 0.3s ease;
+}
+
+.puzzle button:disabled {
+  background: #cccccc; /* Disabled state */
+  cursor: not-allowed;
+}
+
+.puzzle button:hover:not(:disabled) {
+  background-color: #b84a08; /* Darker orange hover */
+}
+
+/* Feedback Styling */
+.feedback {
+  font-size: 18px;
+  margin-top: 25px;
+  font-weight: bold;
+  text-align: center;
+  animation: fadeIn 0.3s ease; /* Subtle fade-in */
+}
+
+.feedback.correct {
+  color: #28a745; /* Green feedback */
+}
+
+.feedback.incorrect {
+  color: #dc3545; /* Red feedback */
+}
+
+/* Result Section */
+.result {
+  background-color: #f0f0f0; /* Slightly lighter gray */
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(219, 87, 10, 0.3); /* Orange glow */
+  color: #db570a;
+  text-align: center;
+}
+
+.result button {
+  margin-top: 20px;
+  background-color: #db570a;
+  color: #ffffff;
+  padding: 12px 30px;
+  border: none;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  width: 100%; /* Full width */
+}
+
+.result button:hover {
+  background-color: #b84a08; /* Hover effect */
+}
+
+.back-button{
+  margin-top: 2px;
+  color: #db570a;
+}
+
+/* Fade-in animation for feedback */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Design for Tablets */
+@media (max-width: 768px) {
+  .escape-room {
+    max-width: 90%; /* Adjust width */
+    margin: 120px auto; /* Adjust spacing below navbar */
+    padding: 20px; /* Reduce padding */
+  }
+
+  .escape-room h2 {
+    font-size: 24px; /* Reduce heading size */
+    margin-bottom: 20px;
+  }
+
+  .escape-room p,
+  .puzzle p {
+    font-size: 16px; /* Adjust text size */
+    margin-bottom: 20px;
+  }
+
+  .options {
+    gap: 10px; /* Reduce gap between options */
+  }
+
+  .option {
+    padding: 10px 15px; /* Adjust padding */
+    font-size: 14px; /* Reduce font size */
+  }
+
+  .puzzle button {
+    font-size: 16px; /* Reduce button text size */
+    padding: 10px 25px; /* Adjust button padding */
+  }
+
+  .result {
+    padding: 20px; /* Reduce padding */
+  }
+
+  .result button {
+    font-size: 16px; /* Adjust button font size */
+    padding: 10px 20px;
+  }
+}
+
+/* Responsive Design for Mobile Phones */
+@media (max-width: 480px) {
+  .escape-room {
+    max-width: 95%; /* Further reduce width */
+    margin: 130px auto; /* Ensure proper spacing below navbar */
+    padding: 15px; /* Reduce padding for smaller screens */
+  }
+
+  .escape-room h2 {
+    font-size: 20px; /* Adjust heading size */
+    margin-bottom: 15px;
+  }
+
+  .escape-room p,
+  .puzzle p {
+    font-size: 14px; /* Adjust text size */
+  }
+
+  .options {
+    gap: 8px; /* Reduce gap */
+  }
+
+  .option {
+    padding: 8px 12px; /* Compact padding */
+    font-size: 12px; /* Smaller font */
+  }
+
+  .puzzle button {
+    font-size: 14px; /* Adjust button font size */
+    padding: 8px 20px; /* Compact button size */
+  }
+
+  .result {
+    padding: 15px; /* Compact padding */
+  }
+
+  .result button {
+    font-size: 14px; /* Adjust button text size */
+    padding: 8px 15px;
+  }
+}
