@@ -49,13 +49,22 @@ const challenges = [
     rules: 'Decrypt 3 messages and identify vulnerabilities. Each task earns 30 points.',
   },
   {
-    id: 6,
-    title: 'Security Resources',
-    desc: 'Access articles, tools, and guides to improve your cybersecurity knowledge.',
-    icon: '../resources.PNG', // Icon file name in public/assets
-    path: '/resources',
-    isNew: false,
-    rules: 'Explore resources and tools at your own pace. No points or scoring involved.',
+    id: 9,
+    title: 'OSINT CTF Lab',
+    desc: 'Use Open Source Intelligence to extract hidden data from social profiles.',
+    icon: '../OSINT CTF Lab.png', // Icon file name in public/
+    path: '/osint-ctf',
+    isNew: true,
+    rules: 'Analyze a suspicious social media profile and extract the flag from image metadata. Download and investigate external files.',
+  },
+  {
+    id: 10,
+    title: 'Steganography CTF Lab',
+    desc: 'Discover hidden data concealed within digital images.',
+    icon: '../Steganography CTF Lab.png', // Icon file name in public/assets
+    path: '/stego-ctf',
+    isNew: true,
+    rules: 'Download the challenge image and use steganography tools to extract the hidden flag. Analyze metadata and appended data.',
   },
 ];
 

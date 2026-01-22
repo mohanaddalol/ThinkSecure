@@ -1,85 +1,217 @@
-.hero {
-  text-align: center;
-  padding: 50px 20px;
-  /* position: relative;
-  z-index: 1; Ensure it’s below the nav-links */
+/* ========================================
+   GLOBAL INDEX STYLES - ThinkSecure
+   Base configuration and utilities
+======================================== */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* Root Variables */
+:root {
+  /* Colors */
+  --color-primary: #00f2ff;
+  --color-secondary: #7b2cbf;
+  --color-tertiary: #ff006e;
+  --color-accent: #5efc82;
+  --color-dark: #0a0e27;
+  --color-dark-alt: #1a1e37;
+  --color-white: #ffffff;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #00f2ff, #7b2cbf);
+  --gradient-secondary: linear-gradient(135deg, #7b2cbf, #ff006e);
+  --gradient-vibrant: linear-gradient(135deg, #00f2ff, #7b2cbf, #ff006e);
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-xxl: 4rem;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 30px rgba(0, 242, 255, 0.4);
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
 }
 
-.hero h1 {
-  font-size: 48px;
-  color: #ffffff;
-  /* text-shadow: 0 0 10px rgba(0, 204, 0, 0.5); */
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.hero p {
-  font-size: 18px;
-  margin-top: 10px;
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
 }
 
-.challenges-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  /* position: relative;
-  z-index: 1; Ensure it’s below the nav-links */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: var(--color-dark);
+  color: var(--color-white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-.challenge-card {
-  position: relative;
-  background-color: #252525;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  /* z-index: 1; Ensure it’s below the nav-links */
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--spacing-sm);
 }
 
-.challenge-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 15px rgba(0, 204, 0, 0.3);
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
 }
 
-.new-label {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #00cc00;
-  color: #1a1a1a;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 12px;
-  /* z-index: 2; Still below the nav-links (z-index: 1000) */
+h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
 }
 
-.challenge-icon {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
+h3 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
 }
 
-.challenge-card h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
+p {
+  margin-bottom: var(--spacing-sm);
 }
 
-.challenge-card p {
-  font-size: 14px;
-  color: #b0b0b0;
-}
-
-.start-btn {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #00cc00;
-  color: #1a1a1a;
+a {
+  color: var(--color-primary);
   text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: color var(--transition-base);
 }
 
-.start-btn:hover {
-  background-color: green;
-  color: #1a1a1a;
+a:hover {
+  color: var(--color-secondary);
+}
+
+/* Utility Classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-gradient {
+  background: var(--gradient-primary);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Selection Color */
+::selection {
+  background: var(--color-primary);
+  color: var(--color-dark);
+}
+
+::-moz-selection {
+  background: var(--color-primary);
+  color: var(--color-dark);
+}
+
+/* Focus Styles */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Smooth Page Transitions */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Loading State */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 242, 255, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--color-primary);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Image Optimization */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Button Base */
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Print Styles */
+@media print {
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  img {
+    page-break-inside: avoid;
+  }
 }

@@ -1,7 +1,7 @@
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #ffffff;
-  color: #333333;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .about-page {
@@ -23,13 +23,17 @@ body {
 
 .back-home {
   display: inline-block;
-  margin-top: 40px; /* Increased gap from header ribbon */
-  margin-bottom: 30px; /* Additional spacing */
+  margin-top: 40px;
+  /* Increased gap from header ribbon */
+  margin-bottom: 30px;
+  /* Additional spacing */
   font-size: 16px;
   color: #db570a;
   text-decoration: none;
-  position: relative; /* Proper placement */
-  z-index: 1; /* Keep Back button visible above other elements */
+  position: relative;
+  /* Proper placement */
+  z-index: 1;
+  /* Keep Back button visible above other elements */
 }
 
 .back-home:hover {
@@ -45,7 +49,7 @@ body {
 
 .header-section p {
   font-size: 18px;
-  color: #555555;
+  color: #cccccc;
   margin-bottom: 20px;
 }
 
@@ -66,29 +70,30 @@ body {
 .info-section p {
   margin-bottom: 15px;
   line-height: 1.5;
+  color: #cccccc;
 }
 
 /* Stats Section Styling */
 .stats-section {
-  background-color: #fffaf5; /* Very light orange background */
-  border: 1px solid #fdecdf;
+  background-color: #1a1a1a;
+  border: 1px solid #333333;
   border-radius: 8px;
-  padding: 25px; /* Increased padding */
-  margin-bottom: 30px; /* Increased margin */
+  padding: 25px;
+  margin-bottom: 30px;
 }
 
 .cyber-stats {
   list-style-type: square;
   padding-left: 20px;
   margin-top: 10px;
-  text-align: justify; /* Justify text for balanced lines */
+  text-align: justify;
 }
 
 .cyber-stats li {
-  margin-bottom: 12px; /* Increased spacing between bullet points */
+  margin-bottom: 12px;
   font-size: 16px;
-  color: #333333;
-  line-height: 1.6; /* Improved line spacing for readability */
+  color: #cccccc;
+  line-height: 1.6;
 }
 
 .attack-grid {
@@ -100,8 +105,8 @@ body {
 
 .attack-card {
   padding: 15px;
-  background-color: #fafafa;
-  border: 1px solid #eeeeee;
+  background-color: #1a1a1a;
+  border: 1px solid #333333;
   border-radius: 8px;
 }
 
@@ -113,7 +118,7 @@ body {
 
 .attack-card p {
   font-size: 16px;
-  color: #555555;
+  color: #cccccc;
 }
 
 .protection-tips {
@@ -126,7 +131,7 @@ body {
 .protection-tips li {
   margin-bottom: 10px;
   font-size: 16px;
-  color: #555555;
+  color: #cccccc;
 }
 
 /* Resource Section Styling */
@@ -139,8 +144,8 @@ body {
 
 .resource-card {
   padding: 15px;
-  background-color: #fafafa;
-  border: 1px solid #eeeeee;
+  background-color: #1a1a1a;
+  border: 1px solid #333333;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -155,7 +160,7 @@ body {
 
 .resource-card p {
   font-size: 14px;
-  color: #555555;
+  color: #cccccc;
   margin-bottom: 15px;
   flex-grow: 1;
 }
@@ -163,7 +168,7 @@ body {
 .resource-link {
   display: inline-block;
   padding: 8px 16px;
-  background-color: #ffffff;
+  background-color: #000000;
   color: #db570a;
   border: 1px solid #db570a;
   border-radius: 4px;
@@ -187,8 +192,8 @@ body {
 
 .blog-card {
   padding: 15px;
-  background-color: #fafafa;
-  border: 1px solid #eeeeee;
+  background-color: #1a1a1a;
+  border: 1px solid #333333;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -203,7 +208,7 @@ body {
 
 .blog-card p {
   font-size: 14px;
-  color: #555555;
+  color: #cccccc;
   margin-bottom: 15px;
   flex-grow: 1;
 }
@@ -211,7 +216,7 @@ body {
 .blog-link {
   display: inline-block;
   padding: 8px 16px;
-  background-color: #ffffff;
+  background-color: #000000;
   color: #db570a;
   border: 1px solid #db570a;
   border-radius: 4px;
@@ -227,7 +232,7 @@ body {
 
 .quiz-promo {
   padding: 20px;
-  background-color: #fffaf5;
+  background-color: #1a1a1a;
   border-radius: 8px;
   text-align: center;
 }
@@ -240,7 +245,7 @@ body {
 
 .quiz-promo p {
   font-size: 16px;
-  color: #555555;
+  color: #cccccc;
   margin-bottom: 20px;
 }
 
@@ -263,54 +268,72 @@ body {
   padding: 10px;
   text-align: center;
   font-size: 14px;
-  color: #555555;
-  border-top: 1px solid #eeeeee;
+  color: #cccccc;
+  border-top: 1px solid #333333;
 }
 
 /* Responsive Design for Tablets */
 @media (max-width: 768px) {
   .about-content {
-    max-width: 90%; /* Adjust content width for tablets */
-    padding: 15px; /* Reduce padding */
+    max-width: 90%;
+    /* Adjust content width for tablets */
+    padding: 15px;
+    /* Reduce padding */
   }
 
   .header-section h1 {
-    font-size: 24px; /* Adjust heading size */
+    font-size: 24px;
+    /* Adjust heading size */
     margin-bottom: 10px;
   }
 
   .header-section p {
-    font-size: 16px; /* Adjust paragraph size */
+    font-size: 16px;
+    /* Adjust paragraph size */
   }
 
   .back-home {
-    margin-top: 35px; /* Increased spacing for tablets */
+    margin-top: 35px;
+    /* Increased spacing for tablets */
   }
 
-  .attack-grid, .resources-section, .blog-section {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust grid columns */
-    gap: 10px; /* Reduce gap */
+  .attack-grid,
+  .resources-section,
+  .blog-section {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    /* Adjust grid columns */
+    gap: 10px;
+    /* Reduce gap */
   }
 
-  .attack-card h3, .resource-card h3, .blog-card h3 {
-    font-size: 18px; /* Adjust heading size for cards */
+  .attack-card h3,
+  .resource-card h3,
+  .blog-card h3 {
+    font-size: 18px;
+    /* Adjust heading size for cards */
   }
 
-  .attack-card p, .resource-card p, .blog-card p {
-    font-size: 14px; /* Adjust paragraph size for cards */
+  .attack-card p,
+  .resource-card p,
+  .blog-card p {
+    font-size: 14px;
+    /* Adjust paragraph size for cards */
   }
 
-  .resource-link, .blog-link {
+  .resource-link,
+  .blog-link {
     font-size: 14px;
     padding: 6px 12px;
   }
 
   .quiz-promo h3 {
-    font-size: 20px; /* Reduce promo heading size */
+    font-size: 20px;
+    /* Reduce promo heading size */
   }
 
   .quiz-promo p {
-    font-size: 14px; /* Adjust paragraph size */
+    font-size: 14px;
+    /* Adjust paragraph size */
   }
 
   .cyber-stats li {
@@ -321,51 +344,71 @@ body {
 /* Responsive Design for Mobile Phones */
 @media (max-width: 480px) {
   .about-content {
-    max-width: 95%; /* Further reduce content width */
-    padding: 10px; /* Compact padding for mobile */
+    max-width: 95%;
+    /* Further reduce content width */
+    padding: 10px;
+    /* Compact padding for mobile */
   }
 
   .header-section h1 {
-    font-size: 20px; /* Compact heading size */
+    font-size: 20px;
+    /* Compact heading size */
   }
 
   .header-section p {
-    font-size: 14px; /* Adjust paragraph size */
+    font-size: 14px;
+    /* Adjust paragraph size */
   }
 
   .back-home {
-    margin-top: 30px; /* Increased spacing for mobile */
+    margin-top: 30px;
+    /* Increased spacing for mobile */
   }
 
-  .attack-grid, .resources-section, .blog-section {
-    grid-template-columns: 1fr; /* Single column for mobile */
-    gap: 8px; /* Further reduce gap */
+  .attack-grid,
+  .resources-section,
+  .blog-section {
+    grid-template-columns: 1fr;
+    /* Single column for mobile */
+    gap: 8px;
+    /* Further reduce gap */
   }
 
-  .attack-card h3, .resource-card h3, .blog-card h3 {
-    font-size: 16px; /* Compact heading size for cards */
+  .attack-card h3,
+  .resource-card h3,
+  .blog-card h3 {
+    font-size: 16px;
+    /* Compact heading size for cards */
   }
 
-  .attack-card p, .resource-card p, .blog-card p {
-    font-size: 12px; /* Compact paragraph size for cards */
+  .attack-card p,
+  .resource-card p,
+  .blog-card p {
+    font-size: 12px;
+    /* Compact paragraph size for cards */
   }
 
-  .resource-link, .blog-link {
+  .resource-link,
+  .blog-link {
     font-size: 12px;
     padding: 6px 10px;
   }
 
   .quiz-promo h3 {
-    font-size: 18px; /* Adjust promo heading size */
+    font-size: 18px;
+    /* Adjust promo heading size */
   }
 
   .quiz-promo p {
-    font-size: 12px; /* Compact paragraph size */
+    font-size: 12px;
+    /* Compact paragraph size */
   }
 
   .start-quiz {
-    font-size: 14px; /* Adjust button text size */
-    padding: 8px 16px; /* Compact button size */
+    font-size: 14px;
+    /* Adjust button text size */
+    padding: 8px 16px;
+    /* Compact button size */
   }
 
   .cyber-stats li {

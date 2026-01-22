@@ -11,10 +11,9 @@ async function parseJsonSafe(res) {
 
 // ==========================
 // BACKEND BASE URL
-// Use relative paths so the frontend (ASP.NET dev server) can proxy `/api/*` to Node.
-// Leave empty to call relative URLs like `/api/auth/login`.
+// Point to the backend server running on port 5000
 // ==========================
-const API_BASE = ""; // was "http://localhost:5000"
+const API_BASE = "http://localhost:5000"; // Backend server URL
 
 // Export name expected by components (keeps compatibility)
 export const API_URL = API_BASE;

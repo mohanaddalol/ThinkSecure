@@ -1,174 +1,218 @@
 .challenges {
-    padding: 50px 20px;
-    text-align: center;
-  }
-  
-  .challenges h2 {
-    font-size: 36px;
-    color: #db570a; /* Orange heading */
-    margin-bottom: 30px;
-  }
-  
-  .challenges-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  .challenge-card {
-  position: relative;
-  background-color: #000000; /* Fully black card background */
-  padding: 20px;
-  border-radius: 10px;
-  border: none; /* Remove the gray border */
+  padding: 50px 20px;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #000000;
+  min-height: 100vh;
 }
 
-  
-  .challenge-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(219, 87, 10, 0.2); /* Orange shadow */
-  }
-  
-  .new-label {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #db570a; /* Orange label */
-    color: #ffffff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 12px;
-  }
-  
-  .challenge-icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-  }
-  
-  .challenge-card h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #db570a; /* Orange heading */
-  }
-  
-  .challenge-card p {
-    font-size: 14px;
-    color: #cccccc; /* Light gray text for readability on black background */
-    margin-bottom: 15px;
-  }
-  
-  .challenge-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .preview-btn {
-    padding: 20px 20px;
-    background-color: #f0f0f0;
-    color: #333333;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .preview-btn:hover {
-    background-color: #db570a;
-    color: #ffffff;
-  }
-  
-  .challenge-start-btn {
+.challenges h2 {
+  font-size: 36px;
+  color: #db570a;
+  /* Orange heading */
+  margin-bottom: 30px;
+}
+
+.challenges-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.challenge-card {
+  position: relative;
+  background-color: #000000 !important;
+  background: #000000 !important;
+  /* Fully black card background */
+  padding: 40px 30px;
+  border-radius: 15px;
+  border: 2px solid #2a2a2a;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+.challenge-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(219, 87, 10, 0.2);
+  /* Orange shadow */
+}
+
+.new-label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #db570a;
+  /* Orange label */
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.challenge-icon {
+  width: 110px;
+  height: 110px;
+  margin-bottom: 20px;
+  object-fit: scale-down;
+  object-position: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.challenge-card h3 {
+  font-size: 26px;
+  margin-bottom: 15px;
+  color: #db570a;
+  /* Orange heading */
+  font-weight: 700;
+}
+
+.challenge-card p {
+  font-size: 16px;
+  color: #cccccc;
+  /* Light gray text for readability on black background */
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.challenge-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.preview-btn {
+  padding: 15px 35px;
+  background-color: #000000;
+  color: #db570a;
+  border: 2px solid #db570a;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.preview-btn:hover {
+  background-color: #db570a;
+  color: #ffffff;
+  border-color: #db570a;
+}
+
+.challenge-start-btn {
   display: inline-block;
-  padding: 20px 20px;
-  background-color: #db570a; /* Orange button */
+  padding: 15px 35px;
+  background-color: #db570a;
+  /* Orange button */
   color: #ffffff;
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 8px;
   transition: background-color 0.3s ease;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .challenge-start-btn:hover {
-  background-color: #b84a08; /* Darker orange hover */
+  background-color: #b84a08;
+  /* Darker orange hover */
 }
 
-  
-  .preview-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: fadeIn 0.3s ease;
-  }
-  
-  .preview-content {
-    background-color: #ffffff; /* White modal */
-    padding: 30px;
-    border-radius: 10px;
-    max-width: 500px;
-    width: 90%;
-    text-align: left;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-    animation: slideIn 0.3s ease;
-  }
-  
-  .preview-content h3 {
-    font-size: 24px;
-    color: #db570a; /* Orange heading */
-    margin-bottom: 15px;
-  }
-  
-  .preview-content p {
-    font-size: 16px;
-    color: #333333;
-    margin-bottom: 20px;
-  }
-  
-  .close-btn {
-    padding: 10px 20px;
-    background-color: #f0f0f0;
-    color: #333333;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .close-btn:hover {
-    background-color: #e0e0e0;
+
+.preview-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.preview-content {
+  background-color: #ffffff;
+  /* White modal */
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  text-align: left;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease;
+}
+
+.preview-content h3 {
+  font-size: 24px;
+  color: #db570a;
+  /* Orange heading */
+  margin-bottom: 15px;
+}
+
+.preview-content p {
+  font-size: 16px;
+  color: #333333;
+  margin-bottom: 20px;
+}
+
+.close-btn {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  color: #333333;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.close-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.challenge-link {
+  color: #db570a;
+  /* Orange link */
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.challenge-link:hover {
+  color: #d79608;
+  /* Darker orange hover */
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
 
-  .challenge-link {
-    color: #db570a; /* Orange link */
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease;
-    margin-top: 10px;
-    display: inline-block;
+  to {
+    opacity: 1;
   }
-  
-  .challenge-link:hover {
-    color: #d79608; /* Darker orange hover */
-    text-decoration: underline;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
   }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
-  
-  @keyframes slideIn {
-    from { transform: translateY(-20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-  
+}

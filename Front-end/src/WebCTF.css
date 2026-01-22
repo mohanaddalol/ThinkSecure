@@ -1,0 +1,370 @@
+.vuln-scanner-container {
+           min-height: 100vh;
+           background: #000000;
+           color: #ffffff;
+           padding: 40px 20px;
+}
+
+.vuln-scanner-header {
+           text-align: center;
+           margin-bottom: 40px;
+}
+
+.vuln-scanner-header h1 {
+           font-size: 2.5rem;
+           color: #ff8c00;
+           margin-bottom: 10px;
+}
+
+.vuln-scanner-header p {
+           font-size: 1.1rem;
+           color: #cccccc;
+}
+
+.scan-start-section {
+           max-width: 600px;
+           margin: 80px auto;
+           text-align: center;
+}
+
+.scan-info {
+           background: #1a1a1a;
+           border: 2px solid #ff8c00;
+           border-radius: 12px;
+           padding: 40px;
+           margin-bottom: 30px;
+}
+
+.scan-info h2 {
+           color: #ff8c00;
+           font-size: 2rem;
+           margin-bottom: 20px;
+}
+
+.scan-info p {
+           color: #cccccc;
+           font-size: 1.1rem;
+           line-height: 1.6;
+           margin-bottom: 15px;
+}
+
+.scan-button {
+           background: linear-gradient(135deg, #ff8c00 0%, #ff6600 100%);
+           color: #ffffff;
+           border: none;
+           padding: 18px 50px;
+           font-size: 1.2rem;
+           font-weight: bold;
+           border-radius: 8px;
+           cursor: pointer;
+           transition: all 0.3s ease;
+           box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+}
+
+.scan-button:hover {
+           transform: translateY(-2px);
+           box-shadow: 0 6px 20px rgba(255, 140, 0, 0.5);
+}
+
+.scanning-section {
+           max-width: 600px;
+           margin: 100px auto;
+           text-align: center;
+}
+
+.scanner-animation {
+           width: 100%;
+           height: 200px;
+           background: #1a1a1a;
+           border: 2px solid #ff8c00;
+           border-radius: 12px;
+           position: relative;
+           overflow: hidden;
+           margin-bottom: 30px;
+}
+
+.scan-line {
+           width: 100%;
+           height: 3px;
+           background: linear-gradient(90deg, transparent, #ff8c00, transparent);
+           position: absolute;
+           top: 0;
+           animation: scanning 2s linear infinite;
+           box-shadow: 0 0 20px #ff8c00;
+}
+
+@keyframes scanning {
+           0% {
+                      top: 0;
+           }
+
+           100% {
+                      top: 100%;
+           }
+}
+
+.scanning-section h2 {
+           color: #ff8c00;
+           font-size: 2rem;
+           margin-bottom: 10px;
+}
+
+.scanning-section p {
+           color: #cccccc;
+           font-size: 1.1rem;
+}
+
+.results-section {
+           max-width: 1200px;
+           margin: 0 auto;
+}
+
+.results-section h2 {
+           color: #ff8c00;
+           text-align: center;
+           font-size: 2rem;
+           margin-bottom: 10px;
+}
+
+.instruction {
+           text-align: center;
+           color: #cccccc;
+           font-size: 1.1rem;
+           margin-bottom: 30px;
+}
+
+.vulnerabilities-list {
+           display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+           gap: 20px;
+           margin-bottom: 40px;
+}
+
+.vuln-card {
+           background: #1a1a1a;
+           border: 2px solid #333333;
+           border-radius: 12px;
+           padding: 20px;
+           cursor: pointer;
+           transition: all 0.3s ease;
+}
+
+.vuln-card:hover {
+           border-color: #ff8c00;
+           transform: translateY(-5px);
+           box-shadow: 0 5px 20px rgba(255, 140, 0, 0.3);
+}
+
+.vuln-card.selected {
+           border-color: #ff8c00;
+           background: #2a2a2a;
+           box-shadow: 0 0 20px rgba(255, 140, 0, 0.4);
+}
+
+.vuln-header {
+           display: flex;
+           justify-content: space-between;
+           align-items: flex-start;
+           margin-bottom: 15px;
+}
+
+.vuln-header h3 {
+           color: #ffffff;
+           font-size: 1.2rem;
+           flex: 1;
+           margin-right: 10px;
+}
+
+.severity-badge {
+           padding: 5px 12px;
+           border-radius: 6px;
+           font-size: 0.9rem;
+           font-weight: bold;
+           text-transform: uppercase;
+}
+
+.severity-badge.critical {
+           background: #ff0000;
+           color: #ffffff;
+}
+
+.severity-badge.high {
+           background: #ff6600;
+           color: #ffffff;
+}
+
+.severity-badge.medium {
+           background: #ffaa00;
+           color: #000000;
+}
+
+.severity-badge.low {
+           background: #00aa00;
+           color: #ffffff;
+}
+
+.severity-badge.info {
+           background: #0088ff;
+           color: #ffffff;
+}
+
+.vuln-description {
+           color: #cccccc;
+           font-size: 1rem;
+           line-height: 1.5;
+           margin-bottom: 15px;
+}
+
+.selection-indicator {
+           color: #ff8c00;
+           font-size: 0.9rem;
+           font-weight: bold;
+           text-align: right;
+}
+
+.submit-button {
+           display: block;
+           margin: 0 auto;
+           background: linear-gradient(135deg, #ff8c00 0%, #ff6600 100%);
+           color: #ffffff;
+           border: none;
+           padding: 15px 60px;
+           font-size: 1.2rem;
+           font-weight: bold;
+           border-radius: 8px;
+           cursor: pointer;
+           transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+           transform: translateY(-2px);
+           box-shadow: 0 6px 20px rgba(255, 140, 0, 0.5);
+}
+
+.final-results {
+           max-width: 800px;
+           margin: 0 auto;
+           text-align: center;
+}
+
+.final-results h2 {
+           color: #ff8c00;
+           font-size: 2.5rem;
+           margin-bottom: 30px;
+}
+
+.score-display {
+           margin: 40px 0;
+}
+
+.score-circle {
+           display: inline-flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: center;
+           width: 200px;
+           height: 200px;
+           border: 8px solid #ff8c00;
+           border-radius: 50%;
+           background: #1a1a1a;
+}
+
+.score-number {
+           font-size: 4rem;
+           font-weight: bold;
+           color: #ff8c00;
+}
+
+.score-label {
+           font-size: 1.5rem;
+           color: #cccccc;
+}
+
+.feedback-message {
+           font-size: 1.3rem;
+           color: #ffffff;
+           margin: 30px 0;
+           line-height: 1.6;
+}
+
+.answer-key {
+           background: #1a1a1a;
+           border: 2px solid #ff8c00;
+           border-radius: 12px;
+           padding: 30px;
+           margin: 40px 0;
+           text-align: left;
+}
+
+.answer-key h3 {
+           color: #ff8c00;
+           font-size: 1.5rem;
+           margin-bottom: 15px;
+           margin-top: 20px;
+}
+
+.answer-key h3:first-child {
+           margin-top: 0;
+}
+
+.answer-key ul {
+           list-style: none;
+           padding: 0;
+}
+
+.answer-key li {
+           padding: 10px;
+           margin-bottom: 8px;
+           border-radius: 6px;
+           font-size: 1.1rem;
+}
+
+.critical-item {
+           background: rgba(255, 0, 0, 0.1);
+           border-left: 4px solid #ff0000;
+           color: #ffffff;
+}
+
+.safe-item {
+           background: rgba(0, 255, 0, 0.1);
+           border-left: 4px solid #00ff00;
+           color: #cccccc;
+}
+
+.reset-button {
+           background: #1a1a1a;
+           color: #ff8c00;
+           border: 2px solid #ff8c00;
+           padding: 15px 50px;
+           font-size: 1.1rem;
+           font-weight: bold;
+           border-radius: 8px;
+           cursor: pointer;
+           transition: all 0.3s ease;
+           margin-top: 30px;
+}
+
+.reset-button:hover {
+           background: #ff8c00;
+           color: #000000;
+           transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+           .vuln-scanner-header h1 {
+                      font-size: 2rem;
+           }
+
+           .vulnerabilities-list {
+                      grid-template-columns: 1fr;
+           }
+
+           .score-circle {
+                      width: 150px;
+                      height: 150px;
+           }
+
+           .score-number {
+                      font-size: 3rem;
+           }
+}

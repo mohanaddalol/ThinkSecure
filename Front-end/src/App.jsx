@@ -19,6 +19,10 @@ import PasswordChallenge from './PasswordChallenge';
 import AttackSimulator from './AttackSimulator';
 import HackTheHacker from './HackTheHacker';
 import HackTheHackerComplete from './HackTheHackerComplete';
+import WebCTF from './WebCTF';
+import ForensicsCTF from './ForensicsCTF';
+import OSINTCTF from './OSINTCTF';
+import StegoCTF from './StegoCTF';
 import AuthModal from './AuthModal'; // ✅ New unified modal
 
 // ProtectedRoute kept for compatibility but no longer blocks access.
@@ -58,6 +62,10 @@ function AppContent() {
     '/games/attack-sim',
     '/games/hack-hacker',
     '/games/hack-hacker/complete',
+    '/web-ctf',
+    '/forensics-ctf',
+    '/osint-ctf',
+    '/stego-ctf',
   ];
 
   // When user navigates directly to protected page (via URL)
@@ -232,6 +240,22 @@ function AppContent() {
         <Route
           path="/games/hack-hacker/complete"
           element={<ProtectedRoute element={<HackTheHackerComplete />} />}
+        />
+        <Route
+          path="/web-ctf"
+          element={<ProtectedRoute element={<WebCTF />} />}
+        />
+        <Route
+          path="/forensics-ctf"
+          element={<ProtectedRoute element={<ForensicsCTF />} />}
+        />
+        <Route
+          path="/osint-ctf"
+          element={<ProtectedRoute element={<OSINTCTF />} />}
+        />
+        <Route
+          path="/stego-ctf"
+          element={<ProtectedRoute element={<StegoCTF />} />}
         />
       </Routes>
     </div>

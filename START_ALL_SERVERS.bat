@@ -15,7 +15,7 @@ start "ThinkSecure - Backend Server" cmd /k "cd /d "%PROJECT_DIR%backend" && nod
 
 echo Waiting 3 seconds for backend to initialize...
 timeout /t 3 /nobreak > nul
-
+   
 echo Starting Frontend Server...
 start "ThinkSecure - Frontend Server" cmd /k "cd /d "%PROJECT_DIR%Front-end" && npm run dev"
 

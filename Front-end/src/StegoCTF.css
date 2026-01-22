@@ -1,0 +1,599 @@
+.stego-ctf-container {
+           min-height: 100vh;
+           background: #000000;
+           color: #ffffff;
+           padding: 40px 20px;
+}
+
+.stego-ctf-header {
+           text-align: center;
+           margin-bottom: 40px;
+           position: relative;
+}
+
+.stego-ctf-header h1 {
+           font-size: 2.5rem;
+           color: #ff8c00;
+           margin-bottom: 10px;
+}
+
+.stego-ctf-header p {
+           font-size: 1.1rem;
+           color: #cccccc;
+}
+
+.stego-ctf-header .back-btn {
+           position: absolute;
+           left: 0;
+           top: 0;
+           background: #ff8c00;
+           color: #000000;
+           border: none;
+           padding: 10px 20px;
+           border-radius: 8px;
+           font-size: 1rem;
+           font-weight: bold;
+           cursor: pointer;
+           transition: all 0.3s ease;
+}
+
+.stego-ctf-header .back-btn:hover {
+           background: #ff9f1a;
+           transform: translateX(-5px);
+}
+
+.challenges-selection {
+           max-width: 1400px;
+           margin: 0 auto;
+}
+
+.challenges-selection h2 {
+           color: #ff8c00;
+           font-size: 2rem;
+           text-align: center;
+           margin-bottom: 40px;
+}
+
+.challenges-grid-stego {
+           display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+           gap: 30px;
+           padding: 20px;
+}
+
+.challenge-card-stego {
+           background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+           border: 2px solid #ff8c00;
+           border-radius: 16px;
+           padding: 30px;
+           transition: all 0.3s ease;
+           position: relative;
+           overflow: hidden;
+}
+
+.challenge-card-stego:hover {
+           transform: translateY(-5px);
+           box-shadow: 0 10px 30px rgba(255, 140, 0, 0.3);
+           border-color: #ff9f1a;
+}
+
+.challenge-card-stego::before {
+           content: '';
+           position: absolute;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 4px;
+           background: linear-gradient(90deg, #ff8c00, #00ff00);
+}
+
+.challenge-card-stego .challenge-badge {
+           margin-bottom: 15px;
+}
+
+.challenge-card-stego .difficulty-badge {
+           display: inline-block;
+           padding: 6px 16px;
+           border-radius: 20px;
+           font-size: 0.85rem;
+           font-weight: bold;
+           text-transform: uppercase;
+}
+
+.challenge-card-stego .difficulty-badge.easy {
+           background: rgba(0, 255, 0, 0.2);
+           color: #00ff00;
+           border: 1px solid #00ff00;
+}
+
+.challenge-card-stego .difficulty-badge.medium {
+           background: rgba(255, 140, 0, 0.2);
+           color: #ff8c00;
+           border: 1px solid #ff8c00;
+}
+
+.challenge-card-stego .difficulty-badge.advanced {
+           background: rgba(255, 0, 0, 0.2);
+           color: #ff0000;
+           border: 1px solid #ff0000;
+}
+
+.challenge-card-stego h3 {
+           color: #ff8c00;
+           font-size: 1.5rem;
+           margin-bottom: 15px;
+}
+
+.challenge-card-stego .challenge-desc {
+           color: #cccccc;
+           font-size: 1rem;
+           line-height: 1.6;
+           margin-bottom: 20px;
+}
+
+.challenge-card-stego .challenge-details {
+           background: rgba(255, 140, 0, 0.1);
+           border-left: 3px solid #ff8c00;
+           padding: 15px;
+           margin-bottom: 20px;
+           border-radius: 4px;
+}
+
+.challenge-card-stego .challenge-details p {
+           color: #cccccc;
+           font-size: 0.95rem;
+           margin: 8px 0;
+}
+
+.challenge-card-stego .challenge-details strong {
+           color: #ff8c00;
+}
+
+.challenge-card-stego .start-challenge-btn {
+           width: 100%;
+           background: #ff8c00;
+           color: #000000;
+           border: none;
+           padding: 14px;
+           border-radius: 8px;
+           font-size: 1.1rem;
+           font-weight: bold;
+           cursor: pointer;
+           transition: all 0.3s ease;
+}
+
+.challenge-card-stego .start-challenge-btn:hover {
+           background: #ff9f1a;
+           transform: scale(1.02);
+           box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+}
+
+.ctf-scenario-stego {
+           max-width: 1000px;
+           margin: 0 auto 30px;
+           background: #1a1a1a;
+           border: 2px solid #ff8c00;
+           border-radius: 12px;
+           padding: 30px;
+}
+
+.ctf-scenario-stego h2 {
+           color: #ff8c00;
+           font-size: 1.8rem;
+           margin-bottom: 20px;
+}
+
+.scenario-content-stego p {
+           color: #cccccc;
+           font-size: 1.1rem;
+           line-height: 1.8;
+           margin-bottom: 15px;
+}
+
+.scenario-content-stego strong {
+           color: #ffffff;
+}
+
+.stego-methods-section {
+           max-width: 1000px;
+           margin: 0 auto 30px;
+}
+
+.stego-methods-section h2 {
+           color: #00ff00;
+           font-size: 1.8rem;
+           margin-bottom: 20px;
+           text-align: center;
+}
+
+.methods-grid {
+           display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+           gap: 20px;
+}
+
+.method-card {
+           background: #1a1a1a;
+           border: 2px solid #333333;
+           border-radius: 8px;
+           padding: 20px;
+           transition: all 0.3s ease;
+}
+
+.method-card:hover {
+           border-color: #00ff00;
+           transform: translateY(-5px);
+}
+
+.method-card h3 {
+           color: #ff8c00;
+           font-size: 1.2rem;
+           margin-bottom: 10px;
+}
+
+.method-card p {
+           color: #cccccc;
+           font-size: 0.95rem;
+           line-height: 1.6;
+}
+
+.challenge-image-section {
+           max-width: 1000px;
+           margin: 0 auto 30px;
+           background: #1a1a1a;
+           border: 2px solid #00ff00;
+           border-radius: 12px;
+           padding: 30px;
+}
+
+.challenge-image-section h2 {
+           color: #00ff00;
+           font-size: 1.8rem;
+           margin-bottom: 20px;
+           text-align: center;
+}
+
+.image-preview-stego {
+           margin-bottom: 20px;
+}
+
+.image-frame {
+           background: #0a0a0a;
+           border: 3px solid #333333;
+           border-radius: 8px;
+           padding: 40px;
+}
+
+.stego-placeholder {
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           gap: 15px;
+}
+
+.stego-icon {
+           font-size: 6rem;
+}
+
+.stego-placeholder p {
+           color: #cccccc;
+           font-size: 1.2rem;
+           margin: 0;
+}
+
+.image-details {
+           color: #ff8c00 !important;
+           font-family: 'Courier New', monospace;
+           font-weight: bold;
+}
+
+.image-size {
+           color: #888888 !important;
+           font-size: 1rem !important;
+}
+
+.image-info {
+           background: #0a0a0a;
+           border: 1px solid #333333;
+           border-radius: 8px;
+           padding: 20px;
+           margin-bottom: 20px;
+}
+
+.image-info p {
+           color: #ffffff;
+           font-weight: bold;
+           margin-bottom: 10px;
+}
+
+.image-info ul {
+           list-style: none;
+           padding: 0;
+}
+
+.image-info li {
+           color: #cccccc;
+           padding: 8px 0;
+           border-bottom: 1px solid #222222;
+           font-size: 1rem;
+}
+
+.image-info li:last-child {
+           border-bottom: none;
+}
+
+.download-section-stego {
+           display: flex;
+           gap: 15px;
+           justify-content: center;
+           flex-wrap: wrap;
+}
+
+.download-btn-stego {
+           background: linear-gradient(135deg, #ff8c00 0%, #ff6600 100%);
+           color: #ffffff;
+           border: none;
+           padding: 15px 30px;
+           font-size: 1.1rem;
+           font-weight: bold;
+           border-radius: 8px;
+           cursor: pointer;
+           transition: all 0.3s ease;
+}
+
+.download-btn-stego:hover {
+           transform: translateY(-2px);
+           box-shadow: 0 5px 20px rgba(255, 140, 0, 0.5);
+}
+
+.download-btn-stego.primary {
+           background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+           color: #000000;
+}
+
+.download-btn-stego.primary:hover {
+           box-shadow: 0 5px 20px rgba(0, 255, 0, 0.5);
+}
+
+.tools-section {
+           max-width: 1000px;
+           margin: 0 auto 30px;
+           background: #1a1a1a;
+           border: 2px solid #333333;
+           border-radius: 12px;
+           padding: 30px;
+}
+
+.tools-section h2 {
+           color: #ff8c00;
+           font-size: 1.8rem;
+           margin-bottom: 20px;
+           text-align: center;
+}
+
+.tools-list {
+           display: grid;
+           gap: 15px;
+}
+
+.tool-item {
+           background: #0a0a0a;
+           border-left: 4px solid #ff8c00;
+           padding: 15px 20px;
+           border-radius: 4px;
+           color: #cccccc;
+           font-size: 1rem;
+           line-height: 1.6;
+}
+
+.tool-item strong {
+           color: #00ff00;
+           font-size: 1.1rem;
+}
+
+.hint-section-stego {
+           max-width: 1000px;
+           margin: 0 auto 30px;
+           background: #1a1a1a;
+           border: 2px solid #333333;
+           border-radius: 12px;
+           padding: 30px;
+}
+
+.hint-section-stego h3 {
+           color: #ff8c00;
+           font-size: 1.5rem;
+           margin-bottom: 20px;
+           text-align: center;
+}
+
+.hint-btn-stego {
+           background: #1a1a1a;
+           color: #ff8c00;
+           border: 2px solid #ff8c00;
+           padding: 12px 30px;
+           font-size: 1rem;
+           font-weight: bold;
+           border-radius: 8px;
+           cursor: pointer;
+           transition: all 0.3s ease;
+           display: block;
+           margin: 10px auto;
+}
+
+.hint-btn-stego:hover {
+           background: #ff8c00;
+           color: #000000;
+}
+
+.hint-box-stego {
+           background: #0a0a0a;
+           border: 1px solid #333333;
+           border-radius: 8px;
+           padding: 20px;
+           margin-bottom: 15px;
+}
+
+.hint-box-stego p {
+           color: #cccccc;
+           font-size: 1rem;
+           line-height: 1.6;
+           margin-bottom: 10px;
+}
+
+.flag-submission-stego {
+           max-width: 1000px;
+           margin: 0 auto 30px;
+           background: #1a1a1a;
+           border: 2px solid #ff8c00;
+           border-radius: 12px;
+           padding: 30px;
+}
+
+.flag-submission-stego h2 {
+           color: #ff8c00;
+           font-size: 1.8rem;
+           margin-bottom: 20px;
+           text-align: center;
+}
+
+.flag-submission-stego form {
+           display: flex;
+           gap: 15px;
+           margin-bottom: 20px;
+}
+
+.flag-input-stego {
+           flex: 1;
+           background: #0a0a0a;
+           border: 2px solid #333333;
+           border-radius: 8px;
+           padding: 15px 20px;
+           color: #ffffff;
+           font-size: 1.1rem;
+           font-family: 'Courier New', monospace;
+           transition: border-color 0.3s ease;
+}
+
+.flag-input-stego:focus {
+           outline: none;
+           border-color: #ff8c00;
+}
+
+.flag-input-stego::placeholder {
+           color: #666666;
+}
+
+.submit-flag-btn-stego {
+           background: linear-gradient(135deg, #ff8c00 0%, #ff6600 100%);
+           color: #ffffff;
+           border: none;
+           padding: 15px 40px;
+           font-size: 1.1rem;
+           font-weight: bold;
+           border-radius: 8px;
+           cursor: pointer;
+           transition: all 0.3s ease;
+           white-space: nowrap;
+}
+
+.submit-flag-btn-stego:hover {
+           transform: translateY(-2px);
+           box-shadow: 0 5px 20px rgba(255, 140, 0, 0.5);
+}
+
+.flag-message-stego {
+           padding: 20px;
+           border-radius: 8px;
+           font-size: 1.2rem;
+           font-weight: bold;
+           text-align: center;
+           animation: fadeIn 0.3s ease;
+}
+
+.flag-message-stego.success {
+           background: rgba(0, 255, 0, 0.1);
+           border: 2px solid #00ff00;
+           color: #00ff00;
+}
+
+.flag-message-stego.error {
+           background: rgba(255, 0, 0, 0.1);
+           border: 2px solid #ff0000;
+           color: #ff0000;
+}
+
+@keyframes fadeIn {
+           from {
+                      opacity: 0;
+                      transform: translateY(-10px);
+           }
+
+           to {
+                      opacity: 1;
+                      transform: translateY(0);
+           }
+}
+
+.learning-section-stego {
+           max-width: 1000px;
+           margin: 0 auto;
+           background: #1a1a1a;
+           border: 2px solid #333333;
+           border-radius: 12px;
+           padding: 30px;
+}
+
+.learning-section-stego h3 {
+           color: #ff8c00;
+           font-size: 1.5rem;
+           margin-bottom: 20px;
+}
+
+.learning-section-stego ul {
+           list-style: none;
+           padding: 0;
+}
+
+.learning-section-stego li {
+           color: #cccccc;
+           font-size: 1rem;
+           line-height: 1.8;
+           margin-bottom: 12px;
+           padding-left: 25px;
+           position: relative;
+}
+
+.learning-section-stego li::before {
+           content: '✓';
+           position: absolute;
+           left: 0;
+           color: #00ff00;
+           font-weight: bold;
+}
+
+@media (max-width: 768px) {
+           .stego-ctf-header h1 {
+                      font-size: 2rem;
+           }
+
+           .methods-grid {
+                      grid-template-columns: 1fr;
+           }
+
+           .download-section-stego {
+                      flex-direction: column;
+           }
+
+           .download-btn-stego {
+                      width: 100%;
+           }
+
+           .flag-submission-stego form {
+                      flex-direction: column;
+           }
+
+           .submit-flag-btn-stego {
+                      width: 100%;
+           }
+}
