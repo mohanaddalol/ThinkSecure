@@ -14,6 +14,7 @@ let dbConnected = false;
 // ✅ Middleware
 // Allow common dev origins and provide a permissive fallback in non-production
 const allowedOrigins = [
+  // local dev
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   "http://172.16.123.3:5173",
@@ -22,6 +23,9 @@ const allowedOrigins = [
   "http://localhost:5176",
   "http://localhost:5177",
   "http://172.16.123.3:5177",
+
+  // ✅ Render frontend (THIS IS THE FIX)
+  "https://thinksecure-frontend.onrender.com",
 ];
 
 app.use(cors({
