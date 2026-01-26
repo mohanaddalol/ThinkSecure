@@ -6,7 +6,6 @@ const challenges = [
            {
                       id: 2,
                       title: 'Twitter Username Investigation',
-                      difficulty: 'Easy',
                       flag: 'THINK{TWITTER_OSINT_PRO}',
                       description: 'Investigate a suspicious Twitter account that has been spreading misinformation about cybersecurity.',
                       objective: 'Find the hidden flag in the user\'s bio or profile information',
@@ -21,7 +20,6 @@ const challenges = [
            {
                       id: 5,
                       title: 'LinkedIn Profile Analysis',
-                      difficulty: 'Easy',
                       flag: 'THINK{LINKEDIN_INTELLIGENCE_ACE}',
                       description: 'Investigate a LinkedIn profile suspected of being a fake account used for social engineering.',
                       objective: 'Analyze the profile and extract the hidden flag',
@@ -36,7 +34,6 @@ const challenges = [
            {
                       id: 6,
                       title: 'GitHub Repository Hunt',
-                      difficulty: 'Easy',
                       flag: 'THINK{GITHUB_SECRET_FINDER}',
                       description: 'A developer accidentally pushed sensitive credentials to a public GitHub repository.',
                       objective: 'Search commit history and find the exposed flag',
@@ -51,7 +48,6 @@ const challenges = [
            {
                       id: 7,
                       title: 'Instagram Geotag Analysis',
-                      difficulty: 'Easy',
                       flag: 'THINK{INSTAGRAM_LOCATION_TRACKER}',
                       description: 'An Instagram account is posting suspicious photos with location tags. Track their movements.',
                       objective: 'Analyze geotagged posts and extract the flag',
@@ -66,7 +62,6 @@ const challenges = [
            {
                       id: 1,
                       title: 'Geolocation Investigation',
-                      difficulty: 'Medium',
                       flag: 'THINK{PHOTO_GEOLOCATION_MASTER}',
                       description: 'A suspicious social media account has been posting photos with embedded geolocation data.',
                       objective: 'Extract flag from image metadata',
@@ -81,7 +76,6 @@ const challenges = [
            {
                       id: 4,
                       title: 'Domain Reconnaissance',
-                      difficulty: 'Medium',
                       flag: 'THINK{DOMAIN_WHOIS_EXPERT}',
                       description: 'A phishing campaign is using a suspicious domain. Perform WHOIS lookup and DNS analysis.',
                       objective: 'Extract registration details and find the flag',
@@ -96,7 +90,6 @@ const challenges = [
            {
                       id: 8,
                       title: 'IP Address Geolocation',
-                      difficulty: 'Medium',
                       flag: 'THINK{IP_GEOLOCATION_MASTER}',
                       description: 'Trace a suspicious IP address involved in unauthorized access attempts to your network.',
                       objective: 'Geolocate the IP and extract information',
@@ -111,7 +104,6 @@ const challenges = [
            {
                       id: 10,
                       title: 'Phone Number OSINT',
-                      difficulty: 'Medium',
                       flag: 'THINK{PHONE_OSINT_EXPERT}',
                       description: 'A suspicious phone number has been used in multiple phishing campaigns. Investigate its origins.',
                       objective: 'Trace the phone number and find connected accounts',
@@ -126,7 +118,6 @@ const challenges = [
            {
                       id: 3,
                       title: 'Email Breach Investigation',
-                      difficulty: 'Advanced',
                       flag: 'THINK{EMAIL_BREACH_DETECTIVE}',
                       description: 'A company suspects their employee emails have been compromised. Analyze the breach data.',
                       objective: 'Identify the breach source and extract the flag',
@@ -141,7 +132,6 @@ const challenges = [
            {
                       id: 9,
                       title: 'Dark Web Marketplace Analysis',
-                      difficulty: 'Advanced',
                       flag: 'THINK{DARKWEB_INVESTIGATOR}',
                       description: 'Investigate a dark web marketplace selling stolen credentials and identify the operator.',
                       objective: 'Analyze marketplace data and extract the flag',
@@ -304,11 +294,6 @@ Good luck, investigator!`;
                                                        <div className="challenges-grid-osint">
                                                                   {challenges.map((challenge) => (
                                                                              <div key={challenge.id} className="challenge-card-osint">
-                                                                                        <div className="challenge-badge">
-                                                                                                   <span className={`difficulty-badge ${challenge.difficulty.toLowerCase()}`}>
-                                                                                                              {challenge.difficulty}
-                                                                                                   </span>
-                                                                                        </div>
                                                                                         <h3>{challenge.title}</h3>
                                                                                         <p className="challenge-desc">{challenge.description}</p>
                                                                                         <div className="challenge-details">

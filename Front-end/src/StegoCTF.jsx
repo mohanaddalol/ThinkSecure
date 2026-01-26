@@ -6,7 +6,6 @@ const challenges = [
            {
                       id: 1,
                       title: 'Appended Text Challenge',
-                      difficulty: 'Easy',
                       flag: 'THINK{APPENDED_DATA_FOUND}',
                       description: 'A simple image file has text data appended after the PNG end marker.',
                       objective: 'Extract the flag from appended text data',
@@ -20,7 +19,6 @@ const challenges = [
            {
                       id: 2,
                       title: 'EXIF Metadata Hunt',
-                      difficulty: 'Easy',
                       flag: 'THINK{EXIF_METADATA_MASTER}',
                       description: 'The flag is hidden in the EXIF metadata fields of a photograph.',
                       objective: 'Extract flag from image metadata',
@@ -34,7 +32,6 @@ const challenges = [
            {
                       id: 3,
                       title: 'Base64 Image Embedding',
-                      difficulty: 'Easy',
                       flag: 'THINK{BASE64_DECODED_SUCCESS}',
                       description: 'A flag is encoded in Base64 and hidden within the image comment.',
                       objective: 'Decode Base64 data to reveal the flag',
@@ -48,7 +45,6 @@ const challenges = [
            {
                       id: 4,
                       title: 'Color Palette Steganography',
-                      difficulty: 'Easy',
                       flag: 'THINK{PALETTE_COLORS_REVEAL}',
                       description: 'The flag is hidden in the color palette indices of a GIF file.',
                       objective: 'Analyze color palette for hidden data',
@@ -62,7 +58,6 @@ const challenges = [
            {
                       id: 5,
                       title: 'LSB Steganography',
-                      difficulty: 'Medium',
                       flag: 'THINK{LSB_BITS_EXTRACTED}',
                       description: 'Data is hidden in the least significant bits of pixel values.',
                       objective: 'Extract LSB data from image pixels',
@@ -76,7 +71,6 @@ const challenges = [
            {
                       id: 6,
                       title: 'Steghide Password Protected',
-                      difficulty: 'Medium',
                       flag: 'THINK{STEGHIDE_UNLOCKED}',
                       description: 'Data is embedded using Steghide with a password. Find the password and extract.',
                       objective: 'Crack password and extract embedded data',
@@ -90,7 +84,6 @@ const challenges = [
            {
                       id: 7,
                       title: 'Multi-Layer Steganography',
-                      difficulty: 'Medium',
                       flag: 'THINK{MULTI_LAYER_DECODED}',
                       description: 'The flag is hidden using multiple steganography techniques in layers.',
                       objective: 'Decode multiple layers to find the flag',
@@ -104,7 +97,6 @@ const challenges = [
            {
                       id: 8,
                       title: 'Audio Spectrogram Analysis',
-                      difficulty: 'Medium',
                       flag: 'THINK{AUDIO_SPECTRUM_FOUND}',
                       description: 'A flag is hidden in the spectrogram of an audio file embedded in the image.',
                       objective: 'Extract and analyze audio spectrogram',
@@ -118,7 +110,6 @@ const challenges = [
            {
                       id: 9,
                       title: 'QR Code in Alpha Channel',
-                      difficulty: 'Advanced',
                       flag: 'THINK{ALPHA_QR_SCANNED}',
                       description: 'A QR code is hidden in the alpha transparency channel of a PNG image.',
                       objective: 'Extract alpha channel and decode QR code',
@@ -132,7 +123,6 @@ const challenges = [
            {
                       id: 10,
                       title: 'Encrypted Zip in Image',
-                      difficulty: 'Advanced',
                       flag: 'THINK{ZIP_ENCRYPTED_CRACKED}',
                       description: 'An encrypted ZIP file is hidden within the image. Extract and crack it.',
                       objective: 'Extract ZIP file and crack the password',
@@ -167,16 +157,6 @@ const StegoCTF = () => {
                       setMessage('');
                       setMessageType('');
                       setHintLevel(0);
-           };
-
-           const getPoints = (difficulty) => {
-                      const pointsMap = {
-                                 'Easy': 10,
-                                 'Medium': 25,
-                                 'Hard': 50,
-                                 'Advanced': 50
-                      };
-                      return pointsMap[difficulty] || 0;
            };
 
            const handleSubmit = async (e) => {
@@ -355,14 +335,6 @@ Good luck, steganographer!`;
                                                        <div className="challenges-grid-stego">
                                                                   {challenges.map((challenge) => (
                                                                              <div key={challenge.id} className="challenge-card-stego">
-                                                                                        <div className="challenge-badge">
-                                                                                                   <span className={`difficulty-badge ${challenge.difficulty.toLowerCase()}`}>
-                                                                                                              {challenge.difficulty}
-                                                                                                   </span>
-                                                                                                   <span className="points-badge">
-                                                                                                              {getPoints(challenge.difficulty)} pts
-                                                                                                   </span>
-                                                                                        </div>
                                                                                         <h3>{challenge.title}</h3>
                                                                                         <p className="challenge-desc">{challenge.description}</p>
                                                                                         <div className="challenge-details">
@@ -399,8 +371,6 @@ Good luck, steganographer!`;
                                                        <p>
                                                                   <strong>Date:</strong> {selectedChallenge.date}<br />
                                                                   <strong>Classification:</strong> {selectedChallenge.classification}<br />
-                                                                  <strong>Difficulty:</strong> <span className={`difficulty-badge ${selectedChallenge.difficulty.toLowerCase()}`}>{selectedChallenge.difficulty}</span><br />
-                                                                  <strong>Points:</strong> <span style={{ color: '#00ff00', fontWeight: 'bold' }}>{getPoints(selectedChallenge.difficulty)} points</span><br />
                                                                   <strong>Technique:</strong> {selectedChallenge.technique}
                                                        </p>
                                                        <p>{selectedChallenge.description}</p>

@@ -10,7 +10,6 @@ const challenges = [
     title: "Command Line Investigation",
     description: "Explore the hacker's terminal to find the hidden password.",
     type: "terminal",
-    difficulty: "easy",
     content: {
       initialText: "You've gained access to a hacker's terminal. Explore the files to find the secret password.",
       currentDirectory: "/home/hacker",
@@ -34,7 +33,6 @@ const challenges = [
     title: "Decode the Message",
     description: "The hacker used a simple encryption method. Can you crack it?",
     type: "decrypt",
-    difficulty: "medium",
     content: {
       encryptedMessage: "Gur frperg pbqr gb gur onfrzrag vf: unpxre_qrpbqre",
       additionalInfo: "This appears to be a simple substitution cipher.",
@@ -49,7 +47,6 @@ const challenges = [
     title: "Hidden in the Image",
     description: "The hacker hid information in this image file. Extract the hidden data.",
     type: "file",
-    difficulty: "medium",
     content: {
       fileName: "vacation_photo.jpg",
       fileContent:
@@ -65,7 +62,6 @@ const challenges = [
     title: "Suspicious Network Traffic",
     description: "Analyze this network traffic capture to find the suspicious data exfiltration.",
     type: "network",
-    difficulty: "hard",
     content: {
       trafficData: `192.168.1.105 -> 8.8.8.8: DNS query for google.com
   192.168.1.105 -> 23.63.127.42: HTTP GET /index.html
@@ -87,7 +83,6 @@ const challenges = [
     title: "Firewall Configuration",
     description: "Configure the firewall rules to block the hacker's access.",
     type: "terminal",
-    difficulty: "hard",
     content: {
       initialText:
         "You need to configure the firewall to block the hacker's IP address. Examine the logs to find their IP and block it.",
@@ -269,19 +264,6 @@ function HackTheHacker() {
 
   const handleActivateFinalAnswerMode = () => {
     setFinalAnswerMode(true);
-  };
-
-  const getDifficultyColor = (difficulty) => {
-    switch (difficulty) {
-      case "easy":
-        return "difficulty-easy";
-      case "medium":
-        return "difficulty-medium";
-      case "hard":
-        return "difficulty-hard";
-      default:
-        return "difficulty-default";
-    }
   };
 
   // Render different challenge types
@@ -525,9 +507,6 @@ function HackTheHacker() {
           <div className="challenge-card">
             <div className="card-header">
               <h2 className="card-title">{currentChallenge.title}</h2>
-              <span className={`difficulty-badge ${getDifficultyColor(currentChallenge.difficulty)}`}>
-                {currentChallenge.difficulty}
-              </span>
             </div>
             <div className="card-description">
               <p>{currentChallenge.description}</p>
