@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Leaderboard.css';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+import { API_URL } from './api';
 
 function Leaderboard() {
   const [leaderboardData, setLeaderboardData] = useState([]);
