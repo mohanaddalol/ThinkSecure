@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./CyberEscapeRoom.css";
+import { submitChallenge } from './api';
 
 // ========================
 // Questions Arrays
@@ -126,7 +127,7 @@ function CyberEscapeRoom() {
     setSelectedAnswer(option);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const isCorrect =
       selectedAnswer === questions[currentQuestionIndex].correctAnswer;
     const updatedCorrectCount = isCorrect ? correctCount + 1 : correctCount;
@@ -134,6 +135,21 @@ function CyberEscapeRoom() {
 
     if (isCorrect) {
       setCorrectCount(updatedCorrectCount);
+
+      // Submit to backend for points
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          await submitChallenge(
+            `escape_room_q${currentQuestionIndex + 1}`,
+            'Cyber Escape Room',
+            'Easy', // Cyber Escape Room is Beginner level (10 points)
+            true
+          );
+        } catch (error) {
+          console.error('Failed to submit:', error);
+        }
+      }
     }
 
     if (updatedCorrectCount >= 5) {
@@ -222,12 +238,11 @@ function CyberEscapeRoom() {
           </div>
           {selectedAnswer && (
             <p
-              className={`feedback ${
-                selectedAnswer ===
-                questions[currentQuestionIndex].correctAnswer
+              className={`feedback ${selectedAnswer ===
+                  questions[currentQuestionIndex].correctAnswer
                   ? "correct"
                   : "incorrect"
-              }`}
+                }`}
             >
               {selectedAnswer === questions[currentQuestionIndex].correctAnswer
                 ? "Correct Answer!"

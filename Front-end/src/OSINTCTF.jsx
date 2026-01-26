@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './OSINTCTF.css';
+import { submitChallenge } from './api';
 
 const challenges = [
            {
@@ -177,12 +178,29 @@ const OSINTCTF = () => {
                       setHintLevel(0);
            };
 
-           const handleSubmit = (e) => {
+           const handleSubmit = async (e) => {
                       e.preventDefault();
 
-                      if (flagInput.trim() === selectedChallenge.flag) {
+                      const isCorrect = flagInput.trim() === selectedChallenge.flag;
+
+                      if (isCorrect) {
                                  setMessage('🎉 Excellent! You successfully completed this OSINT challenge!');
                                  setMessageType('success');
+
+                                 // Submit to backend for points
+                                 const token = localStorage.getItem('token');
+                                 if (token) {
+                                            try {
+                                                       await submitChallenge(
+                                                                  `osint_${selectedChallenge.id}`,
+                                                                  'OSINT',
+                                                                  'Advanced', // OSINT CTF Lab is Advanced level (50 points)
+                                                                  true
+                                                       );
+                                            } catch (error) {
+                                                       console.error('Failed to submit:', error);
+                                            }
+                                 }
                       } else {
                                  setMessage('❌ Incorrect flag. Analyze the information more carefully!');
                                  setMessageType('error');

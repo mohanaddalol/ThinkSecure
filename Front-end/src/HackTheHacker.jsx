@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./HackTheHacker.css";
 import { ArrowLeft, Terminal, CheckCircle, XCircle, AlertTriangle, Search, FileText } from "lucide-react";
+import { submitChallenge } from './api';
 
 const challenges = [
   {
@@ -127,10 +128,10 @@ function HackTheHacker() {
   const currentChallenge = challenges[currentChallengeIndex] || challenges[0];
   const progress = (completedChallenges.length / challenges.length) * 100;
 
-  const handleSubmitAnswer = () => {
+  const handleSubmitAnswer = async () => {
     // For terminal challenges, check the finalAnswer instead of userInput
     const answerToCheck = currentChallenge.type === "terminal" && finalAnswerMode ? finalAnswer : userInput;
-    
+
     if (!answerToCheck && currentChallenge.type !== "terminal") return;
 
     setIsAnswered(true);
@@ -141,8 +142,23 @@ function HackTheHacker() {
 
     if (isCorrectAnswer && !completedChallenges.includes(currentChallenge.id)) {
       setCompletedChallenges([...completedChallenges, currentChallenge.id]);
+
+      // Submit to backend for points
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          await submitChallenge(
+            currentChallenge.id,
+            'Hack The Hacker',
+            'Medium', // Hack The Hacker is Intermediate level (25 points)
+            true
+          );
+        } catch (error) {
+          console.error('Failed to submit:', error);
+        }
+      }
     }
-    
+
     // Track attempted challenges regardless of correctness
     if (!attemptedChallenges.includes(currentChallenge.id)) {
       setAttemptedChallenges([...attemptedChallenges, currentChallenge.id]);
@@ -222,7 +238,7 @@ function HackTheHacker() {
         response = currentChallenge.content.files.join("\n");
       } else if (command.startsWith("cat ")) {
         const fileName = command.substring(4).trim();
-        
+
         // Improved file path handling for nested files
         if (fileName.includes("/")) {
           const fullPath = fileName;
@@ -336,8 +352,8 @@ function HackTheHacker() {
                       }
                     }}
                   />
-                  <button 
-                    onClick={handleSubmitAnswer} 
+                  <button
+                    onClick={handleSubmitAnswer}
                     className="submit-btn"
                     disabled={!finalAnswer}
                   >
@@ -367,7 +383,7 @@ function HackTheHacker() {
                   )}
                 </>
               )}
-              
+
               {currentChallenge.type === "file" && (
                 <>
                   <div className="challenge-header">
@@ -378,7 +394,7 @@ function HackTheHacker() {
                   <div className="challenge-text">{currentChallenge.content.fileContent}</div>
                 </>
               )}
-              
+
               {currentChallenge.type === "network" && (
                 <>
                   <div className="challenge-header">
@@ -390,7 +406,7 @@ function HackTheHacker() {
                 </>
               )}
             </div>
-            
+
             <div className="input-section">
               <div className="input-label">
                 {currentChallenge.type === "decrypt" && "Enter the decrypted message:"}
@@ -409,8 +425,8 @@ function HackTheHacker() {
                     }
                   }}
                 />
-                <button 
-                  onClick={handleSubmitAnswer} 
+                <button
+                  onClick={handleSubmitAnswer}
                   className="submit-btn"
                   disabled={!userInput}
                 >
@@ -442,7 +458,7 @@ function HackTheHacker() {
               <span className="total-challenges">{challenges.length}</span> challenges correctly!
             </p>
           </div>
-          
+
           <div className="challenge-list">
             {challenges.map((challenge, index) => (
               <div key={challenge.id} className="challenge-item">
@@ -459,11 +475,11 @@ function HackTheHacker() {
             ))}
           </div>
         </div>
-        
+
         <div className="summary-actions">
           <button onClick={handleCompleteQuiz} className="summary-btn">
-            {completedChallenges.length === challenges.length 
-              ? "View Certificate" 
+            {completedChallenges.length === challenges.length
+              ? "View Certificate"
               : "Start Over"}
           </button>
         </div>
@@ -559,9 +575,9 @@ function HackTheHacker() {
                     title="Previous Challenge"
                   >
                     <ArrowLeft />
-                    <span>Previous Challenge</span> 
+                    <span>Previous Challenge</span>
                   </button>
-                  
+
                   <div className="center-buttons">
                     <button
                       onClick={() => setShowHint(!showHint)}

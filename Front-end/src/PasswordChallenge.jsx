@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import './PasswordChallenge.css';
+import { submitChallenge } from './api';
 
 const PasswordChallenge = () => {
   const [password, setPassword] = useState('');
@@ -60,6 +61,19 @@ const PasswordChallenge = () => {
     // Final feedback for strong passwords
     setScore(tempScore);
     setFeedback('Great password! Your password score is ' + tempScore + '/100');
+
+    // Submit to backend for points if password is perfect (100 score)
+    if (tempScore === 100) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        submitChallenge(
+          'password_master',
+          'Password',
+          'Easy', // Password Challenge is Beginner level (10 points)
+          true
+        ).catch(error => console.error('Failed to submit:', error));
+      }
+    }
   };
 
   const handleRestart = () => {

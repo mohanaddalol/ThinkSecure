@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import './AttackSimulator.css';
+import { submitChallenge } from './api';
 
 const scenarios = [
   {
@@ -142,10 +143,27 @@ const AttackSimulator = () => {
     setSelectedOption(option);
   };
 
-  const handleSubmit = () => {
-    if (selectedOption === currentScenario.correctOption) {
+  const handleSubmit = async () => {
+    const isCorrect = selectedOption === currentScenario.correctOption;
+
+    if (isCorrect) {
       setFeedback('Correct! Well done!');
       setScore(score + 10);
+
+      // Submit to backend for points
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          await submitChallenge(
+            `attack_sim_${currentScenario.id}`,
+            'Attack Simulator',
+            'Medium', // Attack Simulator is Intermediate level (25 points)
+            true
+          );
+        } catch (error) {
+          console.error('Failed to submit:', error);
+        }
+      }
     } else {
       setFeedback(`Incorrect. The correct option was: ${currentScenario.correctOption}`);
       setIncorrectAnswers([

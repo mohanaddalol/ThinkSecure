@@ -203,7 +203,7 @@ const StegoCTF = () => {
                                  const response = await submitChallenge(
                                             selectedChallenge.id.toString(),
                                             'Steganography',
-                                            selectedChallenge.difficulty,
+                                            'Advanced', // Steganography CTF Lab is Advanced level (50 points for all challenges)
                                             isCorrect
                                  );
 
