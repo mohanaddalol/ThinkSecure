@@ -2,7 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
+import passport from "./config/passport.js";
 import authRoutes from "./routes/authRoutes.js";
+import googleAuthRoutes from "./routes/googleAuthRoutes.js";
 import challengeRoutes from "./routes/challengeRoutes.js";
 
 dotenv.config();
@@ -43,6 +45,9 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// ✅ Initialize Passport for Google OAuth
+app.use(passport.initialize());
+
 // Simple request logger to help debug whether requests reach the server
 app.use((req, res, next) => {
   console.log(`➡️  ${req.method} ${req.originalUrl} - Origin: ${req.headers.origin || 'none'}`);
@@ -61,6 +66,9 @@ app.get("/health", (req, res) => {
 
 // ✅ Auth routes
 app.use("/api/auth", authRoutes);
+
+// ✅ Google OAuth routes
+app.use("/api/auth", googleAuthRoutes);
 
 // Also expose the same auth endpoints at `/api/*` so frontend paths
 // like POST `/api/register` and POST `/api/login` are available.

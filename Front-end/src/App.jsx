@@ -25,6 +25,7 @@ import ForensicsCTF from './ForensicsCTF';
 import OSINTCTF from './OSINTCTF';
 import StegoCTF from './StegoCTF';
 import AuthModal from './AuthModal'; // ✅ New unified modal
+import AuthCallback from './AuthCallback'; // ✅ Google OAuth callback handler
 
 // ProtectedRoute kept for compatibility but no longer blocks access.
 // ✅ ProtectedRoute for blocking routes until login
@@ -216,6 +217,8 @@ function AppContent() {
       {/* Routes */}
       <Routes>
         <Route path="/" element={<Home />} />
+        {/* ✅ Google OAuth Callback Route */}
+        <Route path="/auth/callback" element={<AuthCallback onAuth={handleAuthSuccess} />} />
         <Route
           path="/challenges"
           element={<ProtectedRoute element={<Challenges />} />}

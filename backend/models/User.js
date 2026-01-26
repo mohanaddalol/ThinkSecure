@@ -4,7 +4,11 @@ const userSchema = new mongoose.Schema(
   {
     username: { type: String, required: true, trim: true, unique: true },
     email: { type: String, required: true, trim: true, lowercase: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: false }, // Not required for Google OAuth users
+    // Google OAuth fields
+    googleId: { type: String, sparse: true, unique: true }, // Google user ID
+    provider: { type: String, default: "local" }, // "local" or "google"
+    avatar: { type: String }, // Profile picture URL from Google
     totalScore: { type: Number, default: 0 },
     solvedChallenges: [
       {
