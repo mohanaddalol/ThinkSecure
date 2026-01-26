@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Leaderboard.css';
 import { API_URL } from './api';
 
+// Fetch leaderboard from backend API
 function Leaderboard() {
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [loading, setLoading] = useState(true);
