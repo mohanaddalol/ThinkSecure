@@ -604,6 +604,38 @@
   box-shadow: 0 0 15px rgba(255, 140, 0, 0.2);
 }
 
+.level-badge {
+  padding: 8px 18px;
+  border-radius: 25px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.level-badge.beginner {
+  background: linear-gradient(135deg, #4CAF50, #66BB6A);
+  border: 2px solid #66BB6A;
+}
+
+.level-badge.intermediate {
+  background: linear-gradient(135deg, #FF9800, #FFA726);
+  border: 2px solid #FFA726;
+}
+
+.level-badge.advanced {
+  background: linear-gradient(135deg, #F44336, #EF5350);
+  border: 2px solid #EF5350;
+}
+
+.challenge-card:hover .level-badge {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
 .challenge-title {
   font-size: 22px;
   font-weight: 800;

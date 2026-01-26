@@ -39,6 +39,7 @@ const challenges = [
     icon: 'sx.png',
     path: '/games/security-quiz',
     difficulty: 'Beginner',
+    level: 'BEGINNER',
     color: '#ff8c00'
   },
   {
@@ -48,26 +49,28 @@ const challenges = [
     icon: 'password-icon.png',
     path: '/games/password-challenge',
     difficulty: 'Beginner',
+    level: 'BEGINNER',
     color: '#ff8c00'
   },
-  // INTERMEDIATE LEVEL
   {
     id: 2,
     title: 'Cyber Escape Room',
     desc: 'Solve a series of cybersecurity puzzles to escape from a virtual hacker trap.',
     icon: 'escape-room-icon.PNG',
     path: '/games/escape-room',
-    difficulty: 'Intermediate',
+    difficulty: 'Beginner',
+    level: 'BEGINNER',
     color: '#ff8c00'
   },
-  // ADVANCED LEVEL
+  // INTERMEDIATE LEVEL
   {
     id: 4,
     title: 'Attack Simulator',
     desc: 'React to threats in real-time.',
     icon: 'attack-sim-icon.PNG',
     path: '/games/attack-sim',
-    difficulty: 'Advanced',
+    difficulty: 'Intermediate',
+    level: 'INTERMEDIATE',
     color: '#ff8c00'
   },
   {
@@ -76,9 +79,11 @@ const challenges = [
     desc: 'Decrypt and analyze.',
     icon: 'hack-the-hacker.PNG',
     path: '/games/hack-hacker',
-    difficulty: 'Advanced',
+    difficulty: 'Intermediate',
+    level: 'INTERMEDIATE',
     color: '#ff8c00'
   },
+  // ADVANCED LEVEL
   {
     id: 9,
     title: 'OSINT CTF Lab',
@@ -86,6 +91,7 @@ const challenges = [
     icon: 'OSINT CTF Lab.png',
     path: '/osint-ctf',
     difficulty: 'Advanced',
+    level: 'ADVANCED',
     color: '#ff8c00'
   },
   {
@@ -95,6 +101,7 @@ const challenges = [
     icon: 'Steganography CTF Lab.png',
     path: '/stego-ctf',
     difficulty: 'Advanced',
+    level: 'ADVANCED',
     color: '#ff8c00'
   },
 ];
@@ -219,9 +226,11 @@ function Home() {
                     className="challenge-icon"
                   />
                 </div>
-                <span className="difficulty-badge" style={{ borderColor: challenge.color }}>
-                  {challenge.difficulty}
-                </span>
+                {challenge.level && (
+                  <span className={`level-badge ${challenge.level.toLowerCase()}`}>
+                    {challenge.level}
+                  </span>
+                )}
               </div>
               <h3 className="challenge-title">{challenge.title}</h3>
               <p className="challenge-desc">{challenge.desc}</p>
