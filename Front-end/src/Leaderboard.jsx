@@ -1,41 +1,100 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Leaderboard.css';
 
-const leaderboardData = [
-  { rank: 1, username: 'CyberMaster', score: 450 },
-  { rank: 2, username: 'HackSnipe', score: 420 },
-  { rank: 3, username: 'SecureNinja', score: 390 },
-  { rank: 4, username: 'CodeBreaker', score: 350 },
-  { rank: 5, username: 'FirewallX', score: 320 },
-];
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 function Leaderboard() {
+  const [leaderboardData, setLeaderboardData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchLeaderboard();
+  }, []);
+
+  const fetchLeaderboard = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/api/challenges/leaderboard`);
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch leaderboard');
+      }
+
+      const data = await response.json();
+      setLeaderboardData(data.leaderboard || []);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching leaderboard:', err);
+      setError('Unable to load leaderboard. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="leaderboard">
+        <h2>Leaderboard</h2>
+        <p style={{ textAlign: 'center', padding: '2rem' }}>Loading leaderboard...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="leaderboard">
+        <h2>Leaderboard</h2>
+        <p style={{ textAlign: 'center', padding: '2rem', color: '#ff4444' }}>{error}</p>
+        <button onClick={fetchLeaderboard} style={{ margin: '0 auto', display: 'block' }}>
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  if (leaderboardData.length === 0) {
+    return (
+      <div className="leaderboard">
+        <h2>Leaderboard</h2>
+        <p style={{ textAlign: 'center', padding: '2rem' }}>
+          No scores yet. Be the first to solve a challenge!
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="leaderboard">
       <h2>Leaderboard</h2>
-      <div className="podium">
-        <div className="podium-item silver">
-          <span>2nd</span>
-          <p>{leaderboardData[1].username}</p>
-          <p>{leaderboardData[1].score}</p>
+
+      {leaderboardData.length >= 3 && (
+        <div className="podium">
+          <div className="podium-item silver">
+            <span>2nd</span>
+            <p>{leaderboardData[1].username}</p>
+            <p>{leaderboardData[1].score} pts</p>
+          </div>
+          <div className="podium-item gold">
+            <span>1st</span>
+            <p>{leaderboardData[0].username}</p>
+            <p>{leaderboardData[0].score} pts</p>
+          </div>
+          <div className="podium-item bronze">
+            <span>3rd</span>
+            <p>{leaderboardData[2].username}</p>
+            <p>{leaderboardData[2].score} pts</p>
+          </div>
         </div>
-        <div className="podium-item gold">
-          <span>1st</span>
-          <p>{leaderboardData[0].username}</p>
-          <p>{leaderboardData[0].score}</p>
-        </div>
-        <div className="podium-item bronze">
-          <span>3rd</span>
-          <p>{leaderboardData[2].username}</p>
-          <p>{leaderboardData[2].score}</p>
-        </div>
-      </div>
+      )}
+
       <table className="leaderboard-table">
         <thead>
           <tr>
             <th>Rank</th>
             <th>Username</th>
             <th>Score</th>
+            <th>Challenges Solved</th>
           </tr>
         </thead>
         <tbody>
@@ -44,6 +103,7 @@ function Leaderboard() {
               <td>{player.rank}</td>
               <td>{player.username}</td>
               <td>{player.score}</td>
+              <td>{player.challengesSolved}</td>
             </tr>
           ))}
         </tbody>

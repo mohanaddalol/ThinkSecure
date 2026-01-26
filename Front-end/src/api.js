@@ -68,3 +68,36 @@ export async function apiGet(path, token) {
            const headers = token ? { Authorization: `Bearer ${token}` } : {};
            return apiFetch(path, { headers });
 }
+
+// ==========================
+// Challenge submission
+// ==========================
+export async function submitChallenge(challengeId, category, difficulty, isCorrect) {
+           const token = localStorage.getItem("token");
+           if (!token) {
+                      throw new Error("You must be logged in to submit challenges");
+           }
+
+           return apiFetch("/api/challenges/submit", {
+                      method: "POST",
+                      headers: {
+                                 "Content-Type": "application/json",
+                                 Authorization: `Bearer ${token}`,
+                      },
+                      body: JSON.stringify({ challengeId, category, difficulty, isCorrect }),
+           });
+}
+
+// ==========================
+// Get user progress
+// ==========================
+export async function getUserProgress() {
+           const token = localStorage.getItem("token");
+           if (!token) {
+                      throw new Error("You must be logged in to view progress");
+           }
+
+           return apiFetch("/api/challenges/progress", {
+                      headers: { Authorization: `Bearer ${token}` },
+           });
+}

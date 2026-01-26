@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './StegoCTF.css';
+import { submitChallenge } from './api';
 
 const challenges = [
            {
@@ -150,6 +151,7 @@ const StegoCTF = () => {
            const [message, setMessage] = useState('');
            const [messageType, setMessageType] = useState('');
            const [hintLevel, setHintLevel] = useState(0);
+           const [isSubmitting, setIsSubmitting] = useState(false);
 
            const handleChallengeSelect = (challenge) => {
                       setSelectedChallenge(challenge);
@@ -167,15 +169,68 @@ const StegoCTF = () => {
                       setHintLevel(0);
            };
 
-           const handleSubmit = (e) => {
+           const getPoints = (difficulty) => {
+                      const pointsMap = {
+                                 'Easy': 10,
+                                 'Medium': 25,
+                                 'Hard': 50,
+                                 'Advanced': 50
+                      };
+                      return pointsMap[difficulty] || 0;
+           };
+
+           const handleSubmit = async (e) => {
                       e.preventDefault();
 
-                      if (flagInput.trim() === selectedChallenge.flag) {
-                                 setMessage('🎉 Perfect! You successfully extracted the steganography flag!');
-                                 setMessageType('success');
-                      } else {
-                                 setMessage('❌ Incorrect flag. Use steganography tools to analyze the image!');
-                                 setMessageType('error');
+                      const isCorrect = flagInput.trim() === selectedChallenge.flag;
+
+                      // Check if user is logged in
+                      const token = localStorage.getItem('token');
+                      if (!token) {
+                                 if (isCorrect) {
+                                            setMessage('✅ Correct flag! Please log in to earn points.');
+                                            setMessageType('success');
+                                 } else {
+                                            setMessage('❌ Incorrect flag. Use steganography tools to analyze the image!');
+                                            setMessageType('error');
+                                 }
+                                 return;
+                      }
+
+                      // Submit to backend for scoring
+                      setIsSubmitting(true);
+                      try {
+                                 const response = await submitChallenge(
+                                            selectedChallenge.id.toString(),
+                                            'Steganography',
+                                            selectedChallenge.difficulty,
+                                            isCorrect
+                                 );
+
+                                 if (response.alreadySolved) {
+                                            setMessage('⚠️ You already solved this challenge!');
+                                            setMessageType('warning');
+                                 } else if (isCorrect && response.pointsEarned > 0) {
+                                            setMessage(`🎉 Perfect! You earned ${response.pointsEarned} points! Total: ${response.totalScore} points`);
+                                            setMessageType('success');
+                                 } else if (isCorrect) {
+                                            setMessage('✅ Correct flag!');
+                                            setMessageType('success');
+                                 } else {
+                                            setMessage('❌ Incorrect flag. Use steganography tools to analyze the image!');
+                                            setMessageType('error');
+                                 }
+                      } catch (error) {
+                                 console.error('Submission error:', error);
+                                 if (isCorrect) {
+                                            setMessage('✅ Correct flag! (Score tracking unavailable)');
+                                            setMessageType('success');
+                                 } else {
+                                            setMessage('❌ Incorrect flag. Use steganography tools to analyze the image!');
+                                            setMessageType('error');
+                                 }
+                      } finally {
+                                 setIsSubmitting(false);
                       }
            };
 
@@ -304,6 +359,9 @@ Good luck, steganographer!`;
                                                                                                    <span className={`difficulty-badge ${challenge.difficulty.toLowerCase()}`}>
                                                                                                               {challenge.difficulty}
                                                                                                    </span>
+                                                                                                   <span className="points-badge">
+                                                                                                              {getPoints(challenge.difficulty)} pts
+                                                                                                   </span>
                                                                                         </div>
                                                                                         <h3>{challenge.title}</h3>
                                                                                         <p className="challenge-desc">{challenge.description}</p>
@@ -341,6 +399,8 @@ Good luck, steganographer!`;
                                                        <p>
                                                                   <strong>Date:</strong> {selectedChallenge.date}<br />
                                                                   <strong>Classification:</strong> {selectedChallenge.classification}<br />
+                                                                  <strong>Difficulty:</strong> <span className={`difficulty-badge ${selectedChallenge.difficulty.toLowerCase()}`}>{selectedChallenge.difficulty}</span><br />
+                                                                  <strong>Points:</strong> <span style={{ color: '#00ff00', fontWeight: 'bold' }}>{getPoints(selectedChallenge.difficulty)} points</span><br />
                                                                   <strong>Technique:</strong> {selectedChallenge.technique}
                                                        </p>
                                                        <p>{selectedChallenge.description}</p>
@@ -404,12 +464,13 @@ Good luck, steganographer!`;
                                                                   type="text"
                                                                   value={flagInput}
                                                                   onChange={(e) => setFlagInput(e.target.value)}
-                                                                  placeholder="Enter flag: THINK{...}"
-                                                                  className="flag-input-stego"
+                                                                  disabled={isSubmitting}
                                                        />
-                                                       <button type="submit" className="submit-flag-btn-stego">
-                                                                  Submit Flag
-                                                       </button>
+                                                       <button type="submit" className="submit-flag-btn-stego" disabled={isSubmitting}>
+                                                                  {isSubmitting ? 'Submitting...' : 'Submit Flag'}
+                                                                  <button type="submit" className="submit-flag-btn-stego">
+                                                                             Submit Flag
+                                                                  </button>
                                             </form>
                                             {message && (
                                                        <div className={`flag-message-stego ${messageType}`}>

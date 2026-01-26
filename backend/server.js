@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
+import challengeRoutes from "./routes/challengeRoutes.js";
 
 dotenv.config();
 
@@ -65,6 +66,9 @@ app.use("/api/auth", authRoutes);
 // like POST `/api/register` and POST `/api/login` are available.
 // This preserves the existing `/api/auth/*` routes for compatibility.
 app.use("/api", authRoutes);
+
+// ✅ Challenge routes (scoring and leaderboard)
+app.use("/api/challenges", challengeRoutes);
 
 // 404 handler for debugging - log all unmatched routes
 app.use((req, res, next) => {
