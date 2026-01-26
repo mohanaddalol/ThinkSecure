@@ -1,6 +1,23 @@
 import React, { useState } from "react";
 import { API_URL, apiPost } from "./api";
 
+// ✅ Frontend validation functions (these match backend validation)
+const validateEmail = (email) => {
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return emailRegex.test(email);
+};
+
+const validatePassword = (password) => {
+  if (password.length < 8) {
+    return { valid: false, message: "Password must be at least 8 characters long" };
+  }
+  const asciiRegex = /^[\x20-\x7E]+$/;
+  if (!asciiRegex.test(password)) {
+    return { valid: false, message: "Password must contain only English letters, numbers, and symbols" };
+  }
+  return { valid: true };
+};
+
 export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
   const [tab, setTab] = useState(defaultTab);
   const [email, setEmail] = useState("");
@@ -15,6 +32,23 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
   };
 
   const handleSignupThenAutoLogin = async () => {
+    // ✅ Frontend validation before sending to backend
+    if (!email || !username || !password) {
+      setErr("All fields are required");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setErr("Please enter a valid email address (e.g., name@gmail.com)");
+      return;
+    }
+
+    const passwordCheck = validatePassword(password);
+    if (!passwordCheck.valid) {
+      setErr(passwordCheck.message);
+      return;
+    }
+
     setLoading(true);
     setErr("");
     try {
@@ -30,6 +64,22 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
   };
 
   const handleLogin = async () => {
+    // ✅ Frontend validation before sending to backend
+    if (!email || !password) {
+      setErr("Email and password are required");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setErr("Please enter a valid email address");
+      return;
+    }
+
+    if (password.length < 8) {
+      setErr("Invalid credentials");
+      return;
+    }
+
     setLoading(true);
     setErr("");
     try {

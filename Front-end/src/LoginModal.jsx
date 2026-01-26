@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { API_URL, apiPost } from "./api";
 
+// ✅ Validation functions
+const validateEmail = (email) => {
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return emailRegex.test(email);
+};
+
 function LoginModal({ onClose, onLoggedIn }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -9,6 +15,22 @@ function LoginModal({ onClose, onLoggedIn }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+
+    // ✅ Frontend validation
+    if (!email || !password) {
+      setError("Email and password are required");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Invalid credentials");
+      return;
+    }
 
     try {
       const data = await apiPost("/api/login", { email, password });

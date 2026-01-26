@@ -6,6 +6,26 @@ import Leaderboard from "../models/Leaderboard.js";
 
 const router = express.Router();
 
+// ✅ Validation helper functions
+const validateEmail = (email) => {
+  // RFC 5322 compliant email regex
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return emailRegex.test(email);
+};
+
+const validatePassword = (password) => {
+  // Must be at least 8 characters, contain only English letters, numbers, and symbols
+  if (password.length < 8) {
+    return { valid: false, message: "Password must be at least 8 characters long" };
+  }
+  // Check for only ASCII printable characters (English letters, numbers, symbols)
+  const asciiRegex = /^[\x20-\x7E]+$/;
+  if (!asciiRegex.test(password)) {
+    return { valid: false, message: "Password must contain only English letters, numbers, and symbols" };
+  }
+  return { valid: true };
+};
+
 // In-memory storage fallback (when DB is unavailable)
 const inMemoryUsers = new Map();
 let userIdCounter = 1;
@@ -18,6 +38,17 @@ router.post("/register", async (req, res) => {
     // Validate input
     if (!username || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Validate email format
+    if (!validateEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    // Validate password
+    const passwordCheck = validatePassword(password);
+    if (!passwordCheck.valid) {
+      return res.status(400).json({ message: passwordCheck.message });
     }
 
     // Try MongoDB first
@@ -67,6 +98,17 @@ router.post("/signup", async (req, res) => {
     // Validate input
     if (!username || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Validate email format
+    if (!validateEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    // Validate password
+    const passwordCheck = validatePassword(password);
+    if (!passwordCheck.valid) {
+      return res.status(400).json({ message: passwordCheck.message });
     }
 
     // Try MongoDB first
@@ -126,6 +168,18 @@ router.post("/login", async (req, res) => {
     if (!email || !password) {
       console.log("❌ Missing email or password");
       return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    // Validate email format
+    if (!validateEmail(email)) {
+      console.log("❌ Invalid email format");
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // Basic password check (don't reveal specific requirements on login)
+    if (password.length < 8) {
+      console.log("❌ Password too short");
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     // Try MongoDB first
