@@ -10,6 +10,7 @@ const challenges = [
     icon: '../sx.png', // Icon file name in public/
     path: '/games/security-quiz',
     isNew: false,
+    level: 'BEGINNER',
     rules: 'Answer 10 Cyber Security based questions. Correct answers earn 10 points. No penalties for wrong answers.',
   },
   {
@@ -18,8 +19,7 @@ const challenges = [
     desc: 'Solve puzzles to escape a hacker’s trap.',
     icon: '../escape-room-icon.PNG', // Icon file name in public/assets
     path: '/games/escape-room',
-    isNew: false,
-    rules: 'Solve 5 cybersecurity riddles. Each correct solution unlocks the next step. Finish within 2 minutes.',
+    isNew: false, level: 'BEGINNER', rules: 'Solve 5 cybersecurity riddles. Each correct solution unlocks the next step. Finish within 2 minutes.',
   },
   {
     id: 3,
@@ -28,6 +28,7 @@ const challenges = [
     icon: '../password-icon.png', // Icon file name in public/assets
     path: '/games/password-challenge',
     isNew: false,
+    level: 'BEGINNER',
     rules: 'Enter passwords to evaluate their strength. Learn tips for improving security. No time limit.',
   },
   {
@@ -37,6 +38,7 @@ const challenges = [
     icon: '../attack-sim-icon.PNG', // Icon file name in public/assets
     path: '/games/attack-sim',
     isNew: false,
+    level: 'INTERMEDIATE',
     rules: 'React to 10 different attack scenarios by choosing the correct action within 10 seconds. Earn 20 points for correct choices.',
   },
   {
@@ -46,6 +48,7 @@ const challenges = [
     icon: '../hack-the-hacker.PNG', // Icon file name in public/assets
     path: '/games/hack-hacker',
     isNew: false,
+    level: 'INTERMEDIATE',
     rules: 'Decrypt 3 messages and identify vulnerabilities. Each task earns 30 points.',
   },
   {
@@ -54,7 +57,8 @@ const challenges = [
     desc: 'Use Open Source Intelligence to extract hidden data from social profiles.',
     icon: '../OSINT CTF Lab.png', // Icon file name in public/
     path: '/osint-ctf',
-    isNew: true,
+    isNew: false,
+    level: 'ADVANCED',
     rules: 'Analyze a suspicious social media profile and extract the flag from image metadata. Download and investigate external files.',
   },
   {
@@ -63,7 +67,8 @@ const challenges = [
     desc: 'Discover hidden data concealed within digital images.',
     icon: '../Steganography CTF Lab.png', // Icon file name in public/assets
     path: '/stego-ctf',
-    isNew: true,
+    isNew: false,
+    level: 'ADVANCED',
     rules: 'Download the challenge image and use steganography tools to extract the hidden flag. Analyze metadata and appended data.',
   },
 ];
@@ -81,6 +86,7 @@ function Challenges() {
         {challenges.map((challenge) => (
           <div key={challenge.id} className="challenge-card">
             {challenge.isNew && <span className="new-label">NEW</span>}
+            {challenge.level && <span className={`level-badge ${challenge.level.toLowerCase()}`}>{challenge.level}</span>}
             <img src={`/assets/${challenge.icon}`} alt={challenge.title} className="challenge-icon" />
             <h3>{challenge.title}</h3>
             <p>{challenge.desc}</p>

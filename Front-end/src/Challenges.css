@@ -56,6 +56,37 @@
   font-size: 12px;
 }
 
+.level-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #ffffff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.level-badge.beginner {
+  background-color: #4CAF50;
+  /* Green for beginner */
+  border: 1px solid #66BB6A;
+}
+
+.level-badge.intermediate {
+  background-color: #FF9800;
+  /* Orange for intermediate */
+  border: 1px solid #FFA726;
+}
+
+.level-badge.advanced {
+  background-color: #F44336;
+  /* Red for advanced */
+  border: 1px solid #EF5350;
+}
+
 .challenge-icon {
   width: 110px;
   height: 110px;
