@@ -13,6 +13,7 @@ import {
 import Home from './Home';
 import Challenges from './Challenges';
 import Resources from './Resources';
+import Leaderboard from './Leaderboard';
 import SecurityQuiz from './SecurityQuiz';
 import CyberEscapeRoom from './CyberEscapeRoom';
 import PasswordChallenge from './PasswordChallenge';
@@ -56,6 +57,7 @@ function AppContent() {
   const protectedPaths = [
     '/challenges',
     '/resources',
+    '/leaderboard',
     '/games/security-quiz',
     '/games/escape-room',
     '/games/password-challenge',
@@ -143,6 +145,11 @@ function AppContent() {
           <li>
             <a href="/resources" onClick={handleProtectedClick('/resources')}>
               Resources
+            </a>
+          </li>
+          <li>
+            <a href="/leaderboard" onClick={handleProtectedClick('/leaderboard')}>
+              Leaderboard
             </a>
           </li>
 
@@ -256,6 +263,10 @@ function AppContent() {
         <Route
           path="/stego-ctf"
           element={<ProtectedRoute element={<StegoCTF />} />}
+        />
+        <Route
+          path="/leaderboard"
+          element={<ProtectedRoute element={<Leaderboard />} />}
         />
       </Routes>
     </div>

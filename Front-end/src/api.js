@@ -14,7 +14,7 @@ async function parseJsonSafe(res) {
 // Point to the backend server running on port 5000
 // ==========================
 const API_BASE = "https://thinksecure.onrender.com";
-// Backend server URL
+// Backend server URL (use http://localhost:5000 for local dev, https://thinksecure.onrender.com for production)
 
 // Export name expected by components (keeps compatibility)
 export const API_URL = API_BASE;

@@ -1,7 +1,9 @@
 .quiz-page {
   min-height: 100vh;
-  background-color: #ffffff; /* White background */
-  color: #333333; /* Dark gray text */
+  background-color: #ffffff;
+  /* White background */
+  color: #333333;
+  /* Dark gray text */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,7 +23,8 @@
 }
 
 .exit-link {
-  color: #db570a; /* Orange link */
+  color: #db570a;
+  /* Orange link */
   text-decoration: none;
   font-size: 16px;
   display: flex;
@@ -29,7 +32,8 @@
 }
 
 .exit-link:hover {
-  color: #b84a08; /* Darker orange hover */
+  color: #b84a08;
+  /* Darker orange hover */
 }
 
 .arrow-left {
@@ -52,15 +56,18 @@
 
 .progress-fill {
   height: 100%;
-  background-color: #db570a; /* Orange progress */
+  background-color: #db570a;
+  /* Orange progress */
   transition: width 0.3s ease;
 }
 
 .quiz-card {
-  background-color: #fafafa; /* Light gray card */
+  background-color: #fafafa;
+  /* Light gray card */
   border: 1px solid #eeeeee;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(219, 87, 10, 0.2); /* Orange shadow */
+  box-shadow: 0 5px 15px rgba(219, 87, 10, 0.2);
+  /* Orange shadow */
   overflow: hidden;
 }
 
@@ -71,7 +78,8 @@
 
 .quiz-card-header h2 {
   font-size: 24px;
-  color: #db570a; /* Orange heading */
+  color: #db570a;
+  /* Orange heading */
   margin: 0;
 }
 
@@ -92,6 +100,8 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  color: #000000 !important;
+  /* Force black text */
 }
 
 .option-item:hover {
@@ -104,12 +114,14 @@
 }
 
 .option-item.correct {
-  border-color: #34d60c; /* Keep correct green for feedback */
+  border-color: #34d60c;
+  /* Keep correct green for feedback */
   background-color: rgba(15, 226, 8, 0.2);
 }
 
 .option-item.incorrect {
-  border-color: #dc3545; /* Keep incorrect red for feedback */
+  border-color: #dc3545;
+  /* Keep incorrect red for feedback */
   background-color: rgba(220, 53, 69, 0.2);
 }
 
@@ -124,11 +136,15 @@
   margin-right: 10px;
   font-size: 14px;
   font-weight: bold;
+  color: #000000 !important;
+  /* Force black text */
 }
 
 .option-text {
   flex: 1;
   font-size: 16px;
+  color: #000000 !important;
+  /* Force black text */
 }
 
 .icon {
@@ -154,7 +170,8 @@
 .explanation h4,
 .security-tip h4 {
   font-size: 16px;
-  color: #db570a; /* Orange heading */
+  color: #db570a;
+  /* Orange heading */
   margin-bottom: 5px;
 }
 
@@ -177,7 +194,8 @@
 .restart-btn,
 .home-btn {
   padding: 10px 20px;
-  background-color: #db570a; /* Orange button */
+  background-color: #db570a;
+  /* Orange button */
   color: #ed7207;
   border: none;
   border-radius: 5px;
@@ -192,7 +210,8 @@
 .next-btn:hover,
 .restart-btn:hover,
 .home-btn:hover {
-  background-color: #ef5d03; /* Darker orange hover */
+  background-color: #ef5d03;
+  /* Darker orange hover */
 }
 
 .submit-btn:disabled {
@@ -224,7 +243,7 @@
   margin-bottom: 30px;
 }
 
-.final-buttons { 
+.final-buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
