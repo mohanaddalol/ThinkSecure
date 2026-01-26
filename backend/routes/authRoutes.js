@@ -2,6 +2,7 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import Leaderboard from "../models/Leaderboard.js";
 
 const router = express.Router();
 
@@ -77,6 +78,14 @@ router.post("/signup", async (req, res) => {
 
       const hashed = await bcrypt.hash(password, 10);
       const user = await User.create({ username, email, password: hashed });
+
+      // Create leaderboard entry for new user
+      await Leaderboard.create({
+        userId: user._id,
+        username: user.username,
+        totalScore: 0,
+        solvedChallenges: []
+      });
 
       res.status(201).json({
         message: "User created successfully",

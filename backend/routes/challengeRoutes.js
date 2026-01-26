@@ -1,5 +1,5 @@
 import express from "express";
-import User from "../models/User.js";
+import Leaderboard from "../models/Leaderboard.js";
 import { authenticateToken } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -9,19 +9,37 @@ const POINTS_MAP = {
            Easy: 10,
            Medium: 25,
            Hard: 50,
-           Advanced: 50 // Advanced is treated as Hard (50 points)
+           Advanced: 50
 };
 
-// ✅ Submit a challenge solution
+// Valid categories and difficulties
+const VALID_CATEGORIES = ['Web', 'OSINT', 'Steganography', 'Forensics', 'Quiz', 'Password', 'Attack Simulator', 'Hack The Hacker', 'Cyber Escape Room'];
+const VALID_DIFFICULTIES = ['Easy', 'Medium', 'Hard', 'Advanced'];
+
+// ✅ Submit a challenge solution (validates on backend, prevents duplicates, updates leaderboard only)
 router.post("/submit", authenticateToken, async (req, res) => {
            try {
                       const { challengeId, category, difficulty, isCorrect } = req.body;
                       const userId = req.user.id;
+                      const username = req.user.username;
 
                       // Validate input
-                      if (!challengeId || !category || !difficulty || isCorrect === undefined) {
+                      if (!challengeId || !category || !difficulty) {
                                  return res.status(400).json({
-                                            message: "Missing required fields: challengeId, category, difficulty, isCorrect"
+                                            message: "Missing required fields: challengeId, category, difficulty"
+                                 });
+                      }
+
+                      // Validate category and difficulty
+                      if (!VALID_CATEGORIES.includes(category)) {
+                                 return res.status(400).json({
+                                            message: `Invalid category. Must be one of: ${VALID_CATEGORIES.join(', ')}`
+                                 });
+                      }
+
+                      if (!VALID_DIFFICULTIES.includes(difficulty)) {
+                                 return res.status(400).json({
+                                            message: `Invalid difficulty. Must be one of: ${VALID_DIFFICULTIES.join(', ')}`
                                  });
                       }
 
@@ -30,29 +48,29 @@ router.post("/submit", authenticateToken, async (req, res) => {
                                  return res.json({
                                             message: "Incorrect answer. Try again!",
                                             pointsEarned: 0,
-                                            totalScore: null
+                                            success: false
                                  });
                       }
 
-                      // Calculate points based on difficulty
-                      const points = POINTS_MAP[difficulty] || 0;
-
-                      if (points === 0) {
-                                 return res.status(400).json({
-                                            message: `Invalid difficulty level: ${difficulty}. Must be Easy, Medium, Hard, or Advanced.`
-                                 });
-                      }
+                      // Calculate points
+                      const points = POINTS_MAP[difficulty];
 
                       try {
-                                 // Find user in database
-                                 const user = await User.findById(userId);
+                                 // Find or create leaderboard entry
+                                 let leaderboardEntry = await Leaderboard.findOne({ userId });
 
-                                 if (!user) {
-                                            return res.status(404).json({ message: "User not found" });
+                                 if (!leaderboardEntry) {
+                                            // Create new entry if doesn't exist (for existing users)
+                                            leaderboardEntry = await Leaderboard.create({
+                                                       userId,
+                                                       username,
+                                                       totalScore: 0,
+                                                       solvedChallenges: []
+                                            });
                                  }
 
-                                 // Check if challenge already solved
-                                 const alreadySolved = user.solvedChallenges.some(
+                                 // Check if challenge already solved (prevent double scoring)
+                                 const alreadySolved = leaderboardEntry.solvedChallenges.some(
                                             (challenge) =>
                                                        challenge.challengeId === challengeId &&
                                                        challenge.category === category
@@ -62,13 +80,14 @@ router.post("/submit", authenticateToken, async (req, res) => {
                                             return res.json({
                                                        message: "You've already solved this challenge!",
                                                        pointsEarned: 0,
-                                                       totalScore: user.totalScore,
-                                                       alreadySolved: true
+                                                       totalScore: leaderboardEntry.totalScore,
+                                                       alreadySolved: true,
+                                                       success: false
                                             });
                                  }
 
                                  // Add challenge to solved list and update score
-                                 user.solvedChallenges.push({
+                                 leaderboardEntry.solvedChallenges.push({
                                             challengeId,
                                             category,
                                             difficulty,
@@ -76,17 +95,19 @@ router.post("/submit", authenticateToken, async (req, res) => {
                                             solvedAt: new Date()
                                  });
 
-                                 user.totalScore += points;
-                                 await user.save();
+                                 leaderboardEntry.totalScore += points;
+                                 leaderboardEntry.lastUpdated = new Date();
+                                 await leaderboardEntry.save();
 
-                                 console.log(`✅ User ${user.username} earned ${points} points for ${category} challenge #${challengeId}`);
+                                 console.log(`✅ ${username} earned ${points} points for ${category} (${difficulty}) - Total: ${leaderboardEntry.totalScore}`);
 
                                  res.json({
                                             message: `🎉 Correct! You earned ${points} points!`,
                                             pointsEarned: points,
-                                            totalScore: user.totalScore,
+                                            totalScore: leaderboardEntry.totalScore,
                                             difficulty,
-                                            alreadySolved: false
+                                            alreadySolved: false,
+                                            success: true
                                  });
 
                       } catch (dbError) {
@@ -106,23 +127,23 @@ router.post("/submit", authenticateToken, async (req, res) => {
            }
 });
 
-// ✅ Get leaderboard
+// ✅ Get leaderboard (ranks calculated dynamically, sorted by score)
 router.get("/leaderboard", async (req, res) => {
            try {
-                      // Fetch all users sorted by totalScore (descending) and createdAt (ascending for tie-breaking)
-                      const users = await User.find()
-                                 .select("username totalScore solvedChallenges createdAt")
+                      // Fetch all leaderboard entries sorted by score (desc) and createdAt (asc for tie-breaking)
+                      const entries = await Leaderboard.find()
+                                 .select("username totalScore solvedChallenges lastUpdated")
                                  .sort({ totalScore: -1, createdAt: 1 })
                                  .limit(100);
 
-                      // Format leaderboard data with ranks
-                      const leaderboard = users.map((user, index) => ({
+                      // Dynamically calculate ranks (NOT stored in database)
+                      const leaderboard = entries.map((entry, index) => ({
                                  rank: index + 1,
-                                 username: user.username,
-                                 score: user.totalScore,
-                                 challengesSolved: user.solvedChallenges.length,
-                                 lastSolved: user.solvedChallenges.length > 0
-                                            ? user.solvedChallenges[user.solvedChallenges.length - 1].solvedAt
+                                 username: entry.username,
+                                 score: entry.totalScore,
+                                 challengesSolved: entry.solvedChallenges.length,
+                                 lastSolved: entry.solvedChallenges.length > 0
+                                            ? entry.solvedChallenges[entry.solvedChallenges.length - 1].solvedAt
                                             : null
                       }));
 
@@ -144,11 +165,21 @@ router.get("/leaderboard", async (req, res) => {
 router.get("/progress", authenticateToken, async (req, res) => {
            try {
                       const userId = req.user.id;
-                      const user = await User.findById(userId).select("username totalScore solvedChallenges");
 
-                      if (!user) {
-                                 return res.status(404).json({ message: "User not found" });
+                      let leaderboardEntry = await Leaderboard.findOne({ userId })
+                                 .select("username totalScore solvedChallenges");
+
+                      // If no entry exists, create one
+                      if (!leaderboardEntry) {
+                                 leaderboardEntry = await Leaderboard.create({
+                                            userId,
+                                            username: req.user.username,
+                                            totalScore: 0,
+                                            solvedChallenges: []
+                                 });
                       }
+
+                      const user = leaderboardEntry;
 
                       // Calculate statistics by difficulty and category
                       const statsByDifficulty = {
