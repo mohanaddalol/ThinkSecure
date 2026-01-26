@@ -382,8 +382,12 @@ function SecurityQuiz() {
             true
           );
 
-          if (response.pointsEarned > 0) {
+          if (response.alreadySolved) {
+            // User already answered this specific question before
+            console.log('Question already solved:', currentQuestion.id);
+          } else if (response.pointsEarned > 0) {
             setTotalPoints(totalPoints + response.pointsEarned);
+            console.log('Points earned:', response.pointsEarned);
           }
         } catch (error) {
           console.error('Failed to submit quiz answer:', error);

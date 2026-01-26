@@ -70,13 +70,15 @@ router.post("/submit", authenticateToken, async (req, res) => {
                                  }
 
                                  // Check if challenge already solved (prevent double scoring)
+                                 // Convert both to strings for reliable comparison
                                  const alreadySolved = leaderboardEntry.solvedChallenges.some(
                                             (challenge) =>
-                                                       challenge.challengeId === challengeId &&
+                                                       String(challenge.challengeId) === String(challengeId) &&
                                                        challenge.category === category
                                  );
 
                                  if (alreadySolved) {
+                                            console.log(`⏭️  ${username} already solved ${category} challenge #${challengeId}`);
                                             return res.json({
                                                        message: "You've already solved this challenge!",
                                                        pointsEarned: 0,
@@ -99,7 +101,7 @@ router.post("/submit", authenticateToken, async (req, res) => {
                                  leaderboardEntry.lastUpdated = new Date();
                                  await leaderboardEntry.save();
 
-                                 console.log(`✅ ${username} earned ${points} points for ${category} (${difficulty}) - Total: ${leaderboardEntry.totalScore}`);
+                                 console.log(`✅ ${username} earned ${points} points for ${category} (${difficulty}) challenge #${challengeId} - Total: ${leaderboardEntry.totalScore}`);
 
                                  res.json({
                                             message: `🎉 Correct! You earned ${points} points!`,
