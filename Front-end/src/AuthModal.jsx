@@ -52,9 +52,9 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
     setLoading(true);
     setErr("");
     try {
-      await apiPost("/api/register", { email, username, password });
-      const lData = await apiPost("/api/login", { email, password });
-      onAuth({ token: lData.token, user: lData.user });
+      // Register and get token directly (no need for separate login)
+      const data = await apiPost("/api/signup", { email, username, password });
+      onAuth({ token: data.token, user: data.user });
       onClose();
     } catch (e) {
       setErr(e.message || "Network error, try again.");

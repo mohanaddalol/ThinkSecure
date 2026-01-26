@@ -2,12 +2,15 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
+
+// ✅ Load environment variables FIRST before importing passport
+dotenv.config();
+
+// Now import passport (it will have access to env variables)
 import passport from "./config/passport.js";
 import authRoutes from "./routes/authRoutes.js";
 import googleAuthRoutes from "./routes/googleAuthRoutes.js";
 import challengeRoutes from "./routes/challengeRoutes.js";
-
-dotenv.config();
 
 const app = express();
 
@@ -94,9 +97,14 @@ const connectDB = async (retries = 3) => {
     // Bypass strict TLS verification for network issues
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
+    // Set DNS resolution to use Google DNS to bypass network issues
+    const dns = await import('dns');
+    dns.default.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
+
     await mongoose.connect(process.env.MONGO_URI, {
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 10000,
+      serverSelectionTimeoutMS: 30000, // Increased timeout
+      socketTimeoutMS: 45000,
+      connectTimeoutMS: 30000,
       family: 4, // Force IPv4
     });
 

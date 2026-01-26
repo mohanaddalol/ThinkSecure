@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const leaderboardSchema = new mongoose.Schema({
            userId: {
@@ -54,4 +54,5 @@ leaderboardSchema.index({ totalScore: -1, createdAt: 1 });
 // Index for userId lookups
 leaderboardSchema.index({ userId: 1 });
 
-module.exports = mongoose.model('Leaderboard', leaderboardSchema);
+const Leaderboard = mongoose.model('Leaderboard', leaderboardSchema);
+export default Leaderboard;

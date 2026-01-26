@@ -58,7 +58,7 @@ router.post("/register", async (req, res) => {
         return res.status(400).json({ message: "Email or username already in use" });
       }
 
-      const hashed = await bcrypt.hash(password, 10);
+      const hashed = await bcrypt.hash(password, 8);
       const user = await User.create({ username, email, password: hashed });
 
       res.status(201).json({
@@ -76,7 +76,7 @@ router.post("/register", async (req, res) => {
         }
       }
 
-      const hashed = await bcrypt.hash(password, 10);
+      const hashed = await bcrypt.hash(password, 8);
       const userId = `temp-${userIdCounter++}`;
       inMemoryUsers.set(userId, { username, email, password: hashed });
 
@@ -118,19 +118,27 @@ router.post("/signup", async (req, res) => {
         return res.status(400).json({ message: "Email or username already in use" });
       }
 
-      const hashed = await bcrypt.hash(password, 10);
+      const hashed = await bcrypt.hash(password, 8);
       const user = await User.create({ username, email, password: hashed });
 
-      // Create leaderboard entry for new user
-      await Leaderboard.create({
+      // Create leaderboard entry for new user (non-blocking)
+      Leaderboard.create({
         userId: user._id,
         username: user.username,
         totalScore: 0,
         solvedChallenges: []
-      });
+      }).catch(err => console.error('Leaderboard creation error:', err));
+
+      // Generate JWT token immediately on signup
+      const token = jwt.sign(
+        { id: user._id, username: user.username, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
 
       res.status(201).json({
         message: "User created successfully",
+        token,
         user: { id: user._id, username: user.username, email: user.email },
       });
     } catch (dbError) {
