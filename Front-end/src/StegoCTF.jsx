@@ -464,13 +464,13 @@ Good luck, steganographer!`;
                                                                   type="text"
                                                                   value={flagInput}
                                                                   onChange={(e) => setFlagInput(e.target.value)}
+                                                                  placeholder="Enter flag: THINK{...}"
+                                                                  className="flag-input-stego"
                                                                   disabled={isSubmitting}
                                                        />
                                                        <button type="submit" className="submit-flag-btn-stego" disabled={isSubmitting}>
                                                                   {isSubmitting ? 'Submitting...' : 'Submit Flag'}
-                                                                  <button type="submit" className="submit-flag-btn-stego">
-                                                                             Submit Flag
-                                                                  </button>
+                                                       </button>
                                             </form>
                                             {message && (
                                                        <div className={`flag-message-stego ${messageType}`}>
