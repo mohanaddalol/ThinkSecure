@@ -249,3 +249,121 @@
   align-items: center;
   gap: 15px;
 }
+
+/* ========================================
+   RESPONSIVE DESIGN - MOBILE OPTIMIZATION
+======================================== */
+
+/* Tablet and below */
+@media (max-width: 1024px) {
+  .quiz-container {
+    max-width: 700px;
+  }
+}
+
+/* Mobile Landscape and below */
+@media (max-width: 768px) {
+  .quiz-page {
+    padding: 20px 0;
+  }
+
+  .quiz-container {
+    max-width: 600px;
+    padding: 15px;
+  }
+
+  .quiz-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .exit-link {
+    font-size: 14px;
+  }
+
+  .question-counter {
+    font-size: 14px;
+    align-self: flex-end;
+  }
+
+  .quiz-card-header h2 {
+    font-size: 20px;
+  }
+
+  .quiz-card-content {
+    padding: 15px;
+  }
+
+  .option-item {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .submit-btn,
+  .next-btn,
+  .restart-btn,
+  .home-btn {
+    font-size: 14px;
+    padding: 12px 24px;
+    min-width: 130px;
+  }
+
+  .final-score h3 {
+    font-size: 26px;
+  }
+
+  .final-score p {
+    font-size: 20px;
+  }
+}
+
+/* Mobile Portrait */
+@media (max-width: 480px) {
+  .quiz-container {
+    padding: 10px;
+  }
+
+  .quiz-header {
+    margin-bottom: 15px;
+  }
+
+  .quiz-card-header {
+    padding: 15px;
+  }
+
+  .quiz-card-header h2 {
+    font-size: 18px;
+  }
+
+  .quiz-card-content {
+    padding: 12px;
+  }
+
+  .option-item {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .submit-btn,
+  .next-btn,
+  .restart-btn,
+  .home-btn {
+    font-size: 13px;
+    padding: 10px 20px;
+    min-width: 120px;
+    margin: 5px;
+  }
+
+  .final-score {
+    padding: 20px;
+  }
+
+  .final-score h3 {
+    font-size: 22px;
+  }
+
+  .final-score p {
+    font-size: 18px;
+  }
+}

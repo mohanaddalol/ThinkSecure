@@ -46,6 +46,31 @@
   --transition-fast: 0.2s ease;
   --transition-base: 0.3s ease;
   --transition-slow: 0.5s ease;
+
+  /* Font Sizes - Responsive */
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-base: 1rem;
+  --font-lg: 1.125rem;
+  --font-xl: 1.25rem;
+  --font-2xl: 1.5rem;
+  --font-3xl: 2rem;
+  --font-4xl: 2.5rem;
+}
+
+/* Mobile Font Size Adjustments */
+@media (max-width: 768px) {
+  :root {
+    --font-3xl: 1.75rem;
+    --font-4xl: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --font-3xl: 1.5rem;
+    --font-4xl: 1.75rem;
+  }
 }
 
 /* Reset */

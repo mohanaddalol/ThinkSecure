@@ -1,0 +1,284 @@
+/* ========================================
+   GLOBAL MOBILE OPTIMIZATIONS
+   Enhanced responsive design for all devices
+======================================== */
+
+/* Base Mobile-First Approach */
+* {
+           -webkit-tap-highlight-color: transparent;
+}
+
+html {
+           font-size: 16px;
+           -webkit-text-size-adjust: 100%;
+           -ms-text-size-adjust: 100%;
+}
+
+/* Improved scrolling on iOS */
+body {
+           -webkit-overflow-scrolling: touch;
+}
+
+/* Container max-widths for different screen sizes */
+.container {
+           width: 100%;
+           margin-left: auto;
+           margin-right: auto;
+           padding-left: 15px;
+           padding-right: 15px;
+}
+
+@media (min-width: 576px) {
+           .container {
+                      max-width: 540px;
+           }
+}
+
+@media (min-width: 768px) {
+           .container {
+                      max-width: 720px;
+           }
+}
+
+@media (min-width: 992px) {
+           .container {
+                      max-width: 960px;
+           }
+}
+
+@media (min-width: 1200px) {
+           .container {
+                      max-width: 1140px;
+           }
+}
+
+/* Mobile Typography */
+@media (max-width: 768px) {
+           h1 {
+                      font-size: 2rem;
+           }
+
+           h2 {
+                      font-size: 1.75rem;
+           }
+
+           h3 {
+                      font-size: 1.5rem;
+           }
+
+           h4 {
+                      font-size: 1.25rem;
+           }
+
+           p {
+                      font-size: 1rem;
+           }
+}
+
+@media (max-width: 480px) {
+           h1 {
+                      font-size: 1.75rem;
+           }
+
+           h2 {
+                      font-size: 1.5rem;
+           }
+
+           h3 {
+                      font-size: 1.25rem;
+           }
+}
+
+/* Mobile Button Improvements */
+@media (max-width: 768px) {
+           button {
+                      min-height: 44px;
+                      padding: 12px 20px;
+                      font-size: 16px;
+           }
+}
+
+/* Image Responsiveness */
+img {
+           max-width: 100%;
+           height: auto;
+           display: block;
+}
+
+/* Video Responsiveness */
+video,
+iframe {
+           max-width: 100%;
+           height: auto;
+}
+
+/* Table Responsiveness */
+@media (max-width: 768px) {
+           table {
+                      display: block;
+                      overflow-x: auto;
+                      -webkit-overflow-scrolling: touch;
+           }
+}
+
+/* Form Elements Mobile Optimization */
+@media (max-width: 768px) {
+
+           input[type="text"],
+           input[type="email"],
+           input[type="password"],
+           input[type="tel"],
+           input[type="number"],
+           select,
+           textarea {
+                      font-size: 16px;
+                      /* Prevents zoom on iOS */
+                      padding: 12px;
+           }
+}
+
+/* Utility Classes */
+.mobile-only {
+           display: none;
+}
+
+.desktop-only {
+           display: block;
+}
+
+@media (max-width: 768px) {
+           .mobile-only {
+                      display: block;
+           }
+
+           .desktop-only {
+                      display: none;
+           }
+
+           .text-center-mobile {
+                      text-align: center;
+           }
+
+           .full-width-mobile {
+                      width: 100% !important;
+           }
+}
+
+/* Spacing Utilities for Mobile */
+@media (max-width: 768px) {
+           .py-mobile {
+                      padding-top: 1rem;
+                      padding-bottom: 1rem;
+           }
+
+           .px-mobile {
+                      padding-left: 1rem;
+                      padding-right: 1rem;
+           }
+
+           .my-mobile {
+                      margin-top: 1rem;
+                      margin-bottom: 1rem;
+           }
+
+           .mx-mobile {
+                      margin-left: 1rem;
+                      margin-right: 1rem;
+           }
+}
+
+/* Grid Responsiveness */
+@media (max-width: 768px) {
+
+           .grid,
+           .features-grid,
+           .stats-grid {
+                      grid-template-columns: 1fr !important;
+           }
+}
+
+/* Flexbox Mobile Utilities */
+@media (max-width: 768px) {
+           .flex-column-mobile {
+                      flex-direction: column !important;
+           }
+
+           .flex-center-mobile {
+                      justify-content: center !important;
+                      align-items: center !important;
+           }
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+           -ms-overflow-style: none;
+           scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+           display: none;
+}
+
+/* Safe area for notched devices */
+@supports (padding: max(0px)) {
+           .safe-area-top {
+                      padding-top: max(20px, env(safe-area-inset-top));
+           }
+
+           .safe-area-bottom {
+                      padding-bottom: max(20px, env(safe-area-inset-bottom));
+           }
+
+           .safe-area-left {
+                      padding-left: max(15px, env(safe-area-inset-left));
+           }
+
+           .safe-area-right {
+                      padding-right: max(15px, env(safe-area-inset-right));
+           }
+}
+
+/* Landscape Mobile Adjustments */
+@media (max-height: 600px) and (orientation: landscape) {
+           .app {
+                      padding-top: 60px !important;
+           }
+
+           section {
+                      padding: 40px 20px !important;
+           }
+}
+
+/* Touch-friendly spacing */
+@media (max-width: 768px) {
+
+           a,
+           button {
+                      margin: 8px 4px;
+           }
+}
+
+/* Prevent text selection on double-tap */
+@media (max-width: 768px) {
+           * {
+                      -webkit-touch-callout: none;
+                      user-select: none;
+           }
+
+           input,
+           textarea {
+                      user-select: text;
+                      -webkit-touch-callout: default;
+           }
+}
+
+/* Accessibility - Increase contrast for small screens */
+@media (max-width: 480px) {
+           body {
+                      font-weight: 400;
+           }
+
+           .text-muted {
+                      opacity: 0.8;
+           }
+}

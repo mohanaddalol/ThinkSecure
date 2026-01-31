@@ -247,3 +247,99 @@
     opacity: 1;
   }
 }
+
+/* ========================================
+   RESPONSIVE DESIGN - MOBILE OPTIMIZATION
+======================================== */
+
+/* Tablet and below */
+@media (max-width: 1024px) {
+  .challenges-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    padding: 15px;
+  }
+}
+
+/* Mobile Landscape and below */
+@media (max-width: 768px) {
+  .challenges {
+    padding: 30px 15px;
+  }
+
+  .challenges h2 {
+    font-size: 28px;
+    margin-bottom: 25px;
+  }
+
+  .challenges-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .challenge-card {
+    padding: 30px 20px;
+    min-height: 300px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .challenge-icon {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 15px;
+  }
+
+  .challenge-card h3 {
+    font-size: 20px;
+  }
+
+  .challenge-card p {
+    font-size: 14px;
+  }
+}
+
+/* Mobile Portrait */
+@media (max-width: 480px) {
+  .challenges {
+    padding: 20px 10px;
+  }
+
+  .challenges h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .challenge-card {
+    padding: 25px 15px;
+    min-height: 280px;
+  }
+
+  .challenge-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  .challenge-card h3 {
+    font-size: 18px;
+  }
+
+  .challenge-card p {
+    font-size: 13px;
+  }
+
+  .level-badge {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+
+  .new-label {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  .challenge-link {
+    font-size: 14px;
+  }
+}
