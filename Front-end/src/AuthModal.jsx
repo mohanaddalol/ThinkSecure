@@ -150,9 +150,9 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
               required
             />
             {err && (
-              <div style={{ 
-                color: "#dc3545", 
-                background: "#f8d7da", 
+              <div style={{
+                color: "#dc3545",
+                background: "#f8d7da",
                 border: "1px solid #f5c6cb",
                 padding: "12px",
                 borderRadius: "6px",
@@ -240,9 +240,9 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
               required
             />
             {err && (
-              <div style={{ 
-                color: "#dc3545", 
-                background: "#f8d7da", 
+              <div style={{
+                color: "#dc3545",
+                background: "#f8d7da",
                 border: "1px solid #f5c6cb",
                 padding: "12px",
                 borderRadius: "6px",
