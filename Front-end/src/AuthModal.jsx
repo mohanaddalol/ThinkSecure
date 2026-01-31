@@ -149,7 +149,19 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {err && <p style={{ color: "red" }}>{err}</p>}
+            {err && (
+              <div style={{ 
+                color: "#dc3545", 
+                background: "#f8d7da", 
+                border: "1px solid #f5c6cb",
+                padding: "12px",
+                borderRadius: "6px",
+                marginTop: "10px",
+                fontSize: "14px"
+              }}>
+                ⚠️ {err}
+              </div>
+            )}
 
             <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 16 }}>
               <button type="button" onClick={onClose}>Cancel</button>
@@ -227,7 +239,19 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {err && <p style={{ color: "red" }}>{err}</p>}
+            {err && (
+              <div style={{ 
+                color: "#dc3545", 
+                background: "#f8d7da", 
+                border: "1px solid #f5c6cb",
+                padding: "12px",
+                borderRadius: "6px",
+                marginTop: "10px",
+                fontSize: "14px"
+              }}>
+                ⚠️ {err}
+              </div>
+            )}
 
             <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16 }}>
               <button

@@ -195,13 +195,14 @@ router.post("/login", async (req, res) => {
     try {
       const user = await User.findOne({ email }).select('_id username email password').lean();
       if (!user) {
-        throw new Error("User not found in DB");
+        console.log(`❌ User not found: ${email}`);
+        return res.status(401).json({ message: "Invalid email or password" });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         console.log(`❌ Invalid password for: ${email}`);
-        return res.status(400).json({ message: "Invalid credentials" });
+        return res.status(401).json({ message: "Invalid email or password" });
       }
 
       // Create JWT
@@ -234,13 +235,13 @@ router.post("/login", async (req, res) => {
 
       if (!foundUser) {
         console.log(`❌ User not found: ${email}`);
-        return res.status(400).json({ message: "User not found" });
+        return res.status(401).json({ message: "Invalid email or password" });
       }
 
       const isMatch = await bcrypt.compare(password, foundUser.password);
       if (!isMatch) {
         console.log(`❌ Invalid password for: ${email}`);
-        return res.status(400).json({ message: "Invalid credentials" });
+        return res.status(401).json({ message: "Invalid email or password" });
       }
 
       // Create JWT
