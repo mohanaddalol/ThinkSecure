@@ -25,10 +25,14 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmailSent, setResetEmailSent] = useState(false);
 
   const switchTo = (t) => {
     setErr("");
     setTab(t);
+    setShowForgotPassword(false);
+    setResetEmailSent(false);
   };
 
   const handleSignupThenAutoLogin = async () => {
@@ -88,6 +92,30 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
       onClose();
     } catch (e) {
       setErr(e.message || "Network error, try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setErr("Please enter your email address");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setErr("Please enter a valid email address");
+      return;
+    }
+
+    setLoading(true);
+    setErr("");
+    try {
+      const data = await apiPost("/api/forgot-password", { email });
+      setResetEmailSent(true);
+      setErr("");
+    } catch (e) {
+      setErr(e.message || "Failed to send reset email. Try again.");
     } finally {
       setLoading(false);
     }
@@ -220,6 +248,69 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
               </button>
             </div>
           </>
+        ) : showForgotPassword ? (
+          <>
+            <h2>Forgot Password</h2>
+            {resetEmailSent ? (
+              <div style={{
+                color: "#28a745",
+                background: "#d4edda",
+                border: "1px solid #c3e6cb",
+                padding: "15px",
+                borderRadius: "6px",
+                marginBottom: "15px",
+                fontSize: "14px"
+              }}>
+                ✅ If an account exists with this email, you will receive a password reset link shortly. Please check your email.
+              </div>
+            ) : (
+              <>
+                <p style={{ color: "#666", marginBottom: "20px" }}>
+                  Enter your email address and we'll send you a link to reset your password.
+                </p>
+                <label>Email</label>
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                {err && (
+                  <div style={{
+                    color: "#dc3545",
+                    background: "#f8d7da",
+                    border: "1px solid #f5c6cb",
+                    padding: "12px",
+                    borderRadius: "6px",
+                    marginTop: "10px",
+                    fontSize: "14px"
+                  }}>
+                    ⚠️ {err}
+                  </div>
+                )}
+              </>
+            )}
+
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 10, marginTop: 16 }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowForgotPassword(false);
+                  setResetEmailSent(false);
+                  setErr("");
+                }}
+                style={{ background: "#fff", color: "#fa7e0b", border: "1px solid #fa7e0b" }}
+              >
+                Back to Login
+              </button>
+              {!resetEmailSent && (
+                <button type="button" onClick={handleForgotPassword} disabled={loading}>
+                  {loading ? "Sending..." : "Send Reset Link"}
+                </button>
+              )}
+            </div>
+          </>
         ) : (
           <>
             <h2>Login</h2>
@@ -239,6 +330,25 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+
+            <div style={{ textAlign: "right", marginTop: "5px" }}>
+              <button
+                type="button"
+                onClick={() => setShowForgotPassword(true)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#007bff",
+                  fontSize: "14px",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                  padding: 0
+                }}
+              >
+                Forgot password?
+              </button>
+            </div>
+
             {err && (
               <div style={{
                 color: "#dc3545",

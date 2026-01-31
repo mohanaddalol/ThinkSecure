@@ -9,6 +9,9 @@ const userSchema = new mongoose.Schema(
     googleId: { type: String, sparse: true, unique: true }, // Google user ID
     provider: { type: String, default: "local" }, // "local" or "google"
     avatar: { type: String }, // Profile picture URL from Google
+    // Password reset fields
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Date },
     totalScore: { type: Number, default: 0 },
     solvedChallenges: [
       {

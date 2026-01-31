@@ -1,8 +1,10 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import User from "../models/User.js";
 import Leaderboard from "../models/Leaderboard.js";
+import { sendPasswordResetEmail, sendPasswordResetConfirmation } from "../config/email.js";
 
 const router = express.Router();
 
@@ -113,59 +115,62 @@ router.post("/signup", async (req, res) => {
 
     // Try MongoDB first
     try {
-      const existing = await User.findOne({ $or: [{ email }, { username }] }).lean().select('_id'); \n      if (existing) {
+      const existing = await User.findOne({ $or: [{ email }, { username }] }).lean().select('_id');
+      if (existing) {
         return res.status(400).json({
-          message: \"Email or username already in use\" });
+          message: "Email or username already in use"
+        });
       }
 
-      const hashed = await bcrypt.hash(password, 4); \n      const user = await User.create({ username, email, password: hashed });
+      const hashed = await bcrypt.hash(password, 4);
+      const user = await User.create({ username, email, password: hashed });
 
-        // Create leaderboard entry for new user (non-blocking)
-        setImmediate(() => {
-          Leaderboard.create({
-            userId: user._id,
-            username: user.username,
-            totalScore: 0,
-            solvedChallenges: []
-          }).catch(err => console.error('Leaderboard creation error:', err));
-        });
+      // Create leaderboard entry for new user (non-blocking)
+      setImmediate(() => {
+        Leaderboard.create({
+          userId: user._id,
+          username: user.username,
+          totalScore: 0,
+          solvedChallenges: []
+        }).catch(err => console.error('Leaderboard creation error:', err));
+      });
 
-        // Generate JWT token immediately on signup
-        const token = jwt.sign(
-          { id: user._id, username: user.username, email: user.email },
-          process.env.JWT_SECRET,
-          { expiresIn: "7d" }
-        );
+      // Generate JWT token immediately on signup
+      const token = jwt.sign(
+        { id: user._id, username: user.username, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
 
-        res.status(201).json({
-          message: "User created successfully",
-          token,
-          user: { id: user._id, username: user.username, email: user.email },
-        });
-      } catch (dbError) {
-        // Fallback to in-memory storage
-        console.log("⚠️ MongoDB unavailable, using in-memory storage");
+      res.status(201).json({
+        message: "User created successfully",
+        token,
+        user: { id: user._id, username: user.username, email: user.email },
+      });
+    } catch (dbError) {
+      // Fallback to in-memory storage
+      console.log("⚠️ MongoDB unavailable, using in-memory storage");
 
-        // Check for existing user in memory
-        for (const [id, user] of inMemoryUsers) {
-          if (user.email === email || user.username === username) {
-            return res.status(400).json({ message: "Email or username already in use" });
-          }
+      // Check for existing user in memory
+      for (const [id, user] of inMemoryUsers) {
+        if (user.email === email || user.username === username) {
+          return res.status(400).json({ message: "Email or username already in use" });
         }
-
-        const hashed = await bcrypt.hash(password, 4);
-        const userId = `temp-${userIdCounter++}`;
-        inMemoryUsers.set(userId, { username, email, password: hashed });
-
-        res.status(201).json({
-          message: "User created successfully (in-memory mode)",
-          user: { id: userId, username, email },
-        });
       }
-    } catch (error) {
-      res.status(500).json({ message: "Server error", error: error.message });
+
+      const hashed = await bcrypt.hash(password, 4);
+      const userId = `temp-${userIdCounter++}`;
+      inMemoryUsers.set(userId, { username, email, password: hashed });
+
+      res.status(201).json({
+        message: "User created successfully (in-memory mode)",
+        user: { id: userId, username, email },
+      });
     }
-  });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
 
 // ✅ Login existing user
 router.post("/login", async (req, res) => {
@@ -260,6 +265,124 @@ router.post("/login", async (req, res) => {
     }
   } catch (error) {
     console.error("Login error:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
+// ✅ Request password reset
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    if (!validateEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    // Find user by email
+    const user = await User.findOne({ email });
+
+    // Don't reveal if email exists (security best practice)
+    if (!user) {
+      console.log(`⚠️ Password reset requested for non-existent email: ${email}`);
+      return res.json({
+        message: "If an account exists with this email, you will receive a password reset link shortly."
+      });
+    }
+
+    // Check if user uses Google OAuth (no password to reset)
+    if (user.provider === 'google' && !user.password) {
+      console.log(`⚠️ Password reset requested for Google OAuth user: ${email}`);
+      return res.status(400).json({
+        message: "This account uses Google Sign-In. Please log in with Google instead."
+      });
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    // Hash token before saving to database
+    const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    // Save hashed token and expiration to user
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+    await user.save();
+
+    // Send email with unhashed token
+    const emailResult = await sendPasswordResetEmail(email, resetToken, user.username);
+
+    if (!emailResult.success) {
+      console.error('Failed to send reset email:', emailResult.error);
+      return res.status(500).json({
+        message: "Failed to send reset email. Please try again later."
+      });
+    }
+
+    console.log(`✅ Password reset email sent to: ${email}`);
+    res.json({
+      message: "If an account exists with this email, you will receive a password reset link shortly."
+    });
+
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
+// ✅ Reset password with token
+router.post("/reset-password", async (req, res) => {
+  try {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+      return res.status(400).json({ message: "Token and new password are required" });
+    }
+
+    // Validate new password
+    const passwordCheck = validatePassword(password);
+    if (!passwordCheck.valid) {
+      return res.status(400).json({ message: passwordCheck.message });
+    }
+
+    // Hash the token from URL to compare with database
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    // Find user with valid reset token
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() } // Token not expired
+    });
+
+    if (!user) {
+      console.log('❌ Invalid or expired reset token');
+      return res.status(400).json({
+        message: "Invalid or expired reset token. Please request a new password reset."
+      });
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(password, 4);
+
+    // Update user password and clear reset token
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    // Send confirmation email
+    await sendPasswordResetConfirmation(user.email, user.username);
+
+    console.log(`✅ Password reset successful for: ${user.email}`);
+    res.json({
+      message: "Password reset successful! You can now log in with your new password."
+    });
+
+  } catch (error) {
+    console.error("Reset password error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
