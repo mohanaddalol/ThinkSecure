@@ -7,14 +7,17 @@ import Leaderboard from "../models/Leaderboard.js";
 // ✅ Ensure environment variables are loaded
 dotenv.config();
 
-// ✅ Configure Google OAuth Strategy (only if credentials are provided)
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+// ✅ Configure Google OAuth Strategy (only if credentials are properly provided)
+const googleClientId = process.env.GOOGLE_CLIENT_ID?.trim();
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET?.trim();
+
+if (googleClientId && googleClientSecret && googleClientId.length > 0 && googleClientSecret.length > 0) {
            passport.use(
                       new GoogleStrategy(
                                  {
-                                            clientID: process.env.GOOGLE_CLIENT_ID,
-                                            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                                            callbackURL: process.env.GOOGLE_CALLBACK_URL,
+                                            clientID: googleClientId,
+                                            clientSecret: googleClientSecret,
+                                            callbackURL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:5000/api/auth/google/callback',
                                             proxy: true, // Important for Render/Heroku deployments behind proxy
                                  },
                                  async (accessToken, refreshToken, profile, done) => {

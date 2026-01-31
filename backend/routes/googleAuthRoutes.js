@@ -4,8 +4,10 @@ import passport from "../config/passport.js";
 
 const router = express.Router();
 
-// Check if Google OAuth is configured
-const isGoogleOAuthConfigured = process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET;
+// Check if Google OAuth is configured (robust check)
+const googleClientId = process.env.GOOGLE_CLIENT_ID?.trim();
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET?.trim();
+const isGoogleOAuthConfigured = googleClientId && googleClientSecret && googleClientId.length > 0 && googleClientSecret.length > 0;
 
 // ✅ Initiate Google OAuth login
 router.get(
