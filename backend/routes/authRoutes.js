@@ -113,58 +113,59 @@ router.post("/signup", async (req, res) => {
 
     // Try MongoDB first
     try {
-      const existing = await User.findOne({ $or: [{ email }, { username }] }).lean().select('_id');\n      if (existing) {
-        return res.status(400).json({ message: \"Email or username already in use\" });
+      const existing = await User.findOne({ $or: [{ email }, { username }] }).lean().select('_id'); \n      if (existing) {
+        return res.status(400).json({
+          message: \"Email or username already in use\" });
       }
 
-      const hashed = await bcrypt.hash(password, 4);\n      const user = await User.create({ username, email, password: hashed });
+      const hashed = await bcrypt.hash(password, 4); \n      const user = await User.create({ username, email, password: hashed });
 
-      // Create leaderboard entry for new user (non-blocking)
-      setImmediate(() => {
-        Leaderboard.create({
-          userId: user._id,
-          username: user.username,
-          totalScore: 0,
-          solvedChallenges: []
-        }).catch(err => console.error('Leaderboard creation error:', err));
-      });
+        // Create leaderboard entry for new user (non-blocking)
+        setImmediate(() => {
+          Leaderboard.create({
+            userId: user._id,
+            username: user.username,
+            totalScore: 0,
+            solvedChallenges: []
+          }).catch(err => console.error('Leaderboard creation error:', err));
+        });
 
-      // Generate JWT token immediately on signup
-      const token = jwt.sign(
-        { id: user._id, username: user.username, email: user.email },
-        process.env.JWT_SECRET,
-        { expiresIn: "7d" }
-      );
+        // Generate JWT token immediately on signup
+        const token = jwt.sign(
+          { id: user._id, username: user.username, email: user.email },
+          process.env.JWT_SECRET,
+          { expiresIn: "7d" }
+        );
 
-      res.status(201).json({
-        message: "User created successfully",
-        token,
-        user: { id: user._id, username: user.username, email: user.email },
-      });
-    } catch (dbError) {
-      // Fallback to in-memory storage
-      console.log("⚠️ MongoDB unavailable, using in-memory storage");
+        res.status(201).json({
+          message: "User created successfully",
+          token,
+          user: { id: user._id, username: user.username, email: user.email },
+        });
+      } catch (dbError) {
+        // Fallback to in-memory storage
+        console.log("⚠️ MongoDB unavailable, using in-memory storage");
 
-      // Check for existing user in memory
-      for (const [id, user] of inMemoryUsers) {
-        if (user.email === email || user.username === username) {
-          return res.status(400).json({ message: "Email or username already in use" });
+        // Check for existing user in memory
+        for (const [id, user] of inMemoryUsers) {
+          if (user.email === email || user.username === username) {
+            return res.status(400).json({ message: "Email or username already in use" });
+          }
         }
+
+        const hashed = await bcrypt.hash(password, 4);
+        const userId = `temp-${userIdCounter++}`;
+        inMemoryUsers.set(userId, { username, email, password: hashed });
+
+        res.status(201).json({
+          message: "User created successfully (in-memory mode)",
+          user: { id: userId, username, email },
+        });
       }
-
-      const hashed = await bcrypt.hash(password, 4);
-      const userId = `temp-${userIdCounter++}`;
-      inMemoryUsers.set(userId, { username, email, password: hashed });
-
-      res.status(201).json({
-        message: "User created successfully (in-memory mode)",
-        user: { id: userId, username, email },
-      });
+    } catch (error) {
+      res.status(500).json({ message: "Server error", error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
-});
+  });
 
 // ✅ Login existing user
 router.post("/login", async (req, res) => {

@@ -20,8 +20,8 @@ passport.use(
                                  try {
                                             console.log("🔍 Google OAuth Profile:", profile.id, profile.emails[0].value);
 
-                                            // Check if user already exists with this Google ID (optimized query)
-                                            let user = await User.findOne({ googleId: profile.id }).lean();
+                                            // Check if user already exists with this Google ID
+                                            let user = await User.findOne({ googleId: profile.id });
 
                                             if (user) {
                                                        console.log("✅ Existing Google user found:", user.username);

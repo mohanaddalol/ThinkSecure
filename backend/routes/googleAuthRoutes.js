@@ -18,10 +18,18 @@ router.get(
            "/google/callback",
            passport.authenticate("google", {
                       session: false,
-                      failureRedirect: process.env.FRONTEND_URL || "http://localhost:5173/login?error=oauth_failed",
+                      failureRedirect: process.env.FRONTEND_URL || "https://thinksecure-frontend.onrender.com/login?error=oauth_failed",
            }),
            (req, res) => {
                       try {
+                                 console.log("✅ Google OAuth callback successful for:", req.user?.username);
+
+                                 if (!req.user) {
+                                            console.error("❌ No user object in request");
+                                            const frontendURL = process.env.FRONTEND_URL || "https://thinksecure-frontend.onrender.com";
+                                            return res.redirect(`${frontendURL}/login?error=no_user`);
+                                 }
+
                                  // User authenticated successfully, create JWT
                                  const token = jwt.sign(
                                             {
@@ -34,12 +42,15 @@ router.get(
                                             { expiresIn: "7d" }
                                  );
 
+                                 console.log("✅ JWT created successfully");
+
                                  // Redirect to frontend with token in URL
-                                 const frontendURL = process.env.FRONTEND_URL || "http://localhost:5173";
+                                 const frontendURL = process.env.FRONTEND_URL || "https://thinksecure-frontend.onrender.com";
+                                 console.log(`🔄 Redirecting to: ${frontendURL}/auth/callback?token=${token.substring(0, 20)}...`);
                                  res.redirect(`${frontendURL}/auth/callback?token=${token}`);
                       } catch (error) {
                                  console.error("❌ Error creating JWT after Google auth:", error);
-                                 const frontendURL = process.env.FRONTEND_URL || "http://localhost:5173";
+                                 const frontendURL = process.env.FRONTEND_URL || "https://thinksecure-frontend.onrender.com";
                                  res.redirect(`${frontendURL}/login?error=token_failed`);
                       }
            }
