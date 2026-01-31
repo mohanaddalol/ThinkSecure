@@ -4,9 +4,20 @@ import passport from "../config/passport.js";
 
 const router = express.Router();
 
+// Check if Google OAuth is configured
+const isGoogleOAuthConfigured = process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET;
+
 // ✅ Initiate Google OAuth login
 router.get(
            "/google",
+           (req, res, next) => {
+                      if (!isGoogleOAuthConfigured) {
+                                 return res.status(503).json({
+                                            message: "Google OAuth is not configured on this server"
+                                 });
+                      }
+                      next();
+           },
            passport.authenticate("google", {
                       scope: ["profile", "email"],
                       session: false, // We're using JWT, not sessions
@@ -16,6 +27,13 @@ router.get(
 // ✅ Google OAuth callback route
 router.get(
            "/google/callback",
+           (req, res, next) => {
+                      if (!isGoogleOAuthConfigured) {
+                                 const frontendURL = process.env.FRONTEND_URL || "https://thinksecure-frontend.onrender.com";
+                                 return res.redirect(`${frontendURL}/login?error=oauth_not_configured`);
+                      }
+                      next();
+           },
            passport.authenticate("google", {
                       session: false,
                       failureRedirect: process.env.FRONTEND_URL || "https://thinksecure-frontend.onrender.com/login?error=oauth_failed",
