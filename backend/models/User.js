@@ -23,5 +23,10 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Performance indexes for faster queries
+userSchema.index({ email: 1 }, { unique: true });
+userSchema.index({ username: 1 }, { unique: true });
+userSchema.index({ googleId: 1 }, { sparse: true });
+
 const User = mongoose.model("User", userSchema);
 export default User;

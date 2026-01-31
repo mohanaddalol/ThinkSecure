@@ -58,7 +58,7 @@ router.post("/register", async (req, res) => {
         return res.status(400).json({ message: "Email or username already in use" });
       }
 
-      const hashed = await bcrypt.hash(password, 8);
+      const hashed = await bcrypt.hash(password, 4);
       const user = await User.create({ username, email, password: hashed });
 
       res.status(201).json({
@@ -113,21 +113,21 @@ router.post("/signup", async (req, res) => {
 
     // Try MongoDB first
     try {
-      const existing = await User.findOne({ $or: [{ email }, { username }] });
-      if (existing) {
-        return res.status(400).json({ message: "Email or username already in use" });
+      const existing = await User.findOne({ $or: [{ email }, { username }] }).lean().select('_id');\n      if (existing) {
+        return res.status(400).json({ message: \"Email or username already in use\" });
       }
 
-      const hashed = await bcrypt.hash(password, 8);
-      const user = await User.create({ username, email, password: hashed });
+      const hashed = await bcrypt.hash(password, 4);\n      const user = await User.create({ username, email, password: hashed });
 
       // Create leaderboard entry for new user (non-blocking)
-      Leaderboard.create({
-        userId: user._id,
-        username: user.username,
-        totalScore: 0,
-        solvedChallenges: []
-      }).catch(err => console.error('Leaderboard creation error:', err));
+      setImmediate(() => {
+        Leaderboard.create({
+          userId: user._id,
+          username: user.username,
+          totalScore: 0,
+          solvedChallenges: []
+        }).catch(err => console.error('Leaderboard creation error:', err));
+      });
 
       // Generate JWT token immediately on signup
       const token = jwt.sign(
@@ -152,7 +152,7 @@ router.post("/signup", async (req, res) => {
         }
       }
 
-      const hashed = await bcrypt.hash(password, 10);
+      const hashed = await bcrypt.hash(password, 4);
       const userId = `temp-${userIdCounter++}`;
       inMemoryUsers.set(userId, { username, email, password: hashed });
 
@@ -192,7 +192,7 @@ router.post("/login", async (req, res) => {
 
     // Try MongoDB first
     try {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email }).select('_id username email password').lean();
       if (!user) {
         throw new Error("User not found in DB");
       }

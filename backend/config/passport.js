@@ -20,8 +20,8 @@ passport.use(
                                  try {
                                             console.log("🔍 Google OAuth Profile:", profile.id, profile.emails[0].value);
 
-                                            // Check if user already exists with this Google ID
-                                            let user = await User.findOne({ googleId: profile.id });
+                                            // Check if user already exists with this Google ID (optimized query)
+                                            let user = await User.findOne({ googleId: profile.id }).lean();
 
                                             if (user) {
                                                        console.log("✅ Existing Google user found:", user.username);
@@ -64,12 +64,14 @@ passport.use(
                                                        password: undefined, // No password for Google OAuth users
                                             });
 
-                                            // Create leaderboard entry for new Google user
-                                            await Leaderboard.create({
-                                                       userId: user._id,
-                                                       username: user.username,
-                                                       totalScore: 0,
-                                                       solvedChallenges: []
+                                            // Create leaderboard entry for new Google user (non-blocking)
+                                            setImmediate(() => {
+                                                       Leaderboard.create({
+                                                                  userId: user._id,
+                                                                  username: user.username,
+                                                                  totalScore: 0,
+                                                                  solvedChallenges: []
+                                                       }).catch(err => console.error('Leaderboard creation error:', err));
                                             });
 
                                             console.log("✅ New Google user created:", user.username);

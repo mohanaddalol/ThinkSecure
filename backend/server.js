@@ -102,10 +102,12 @@ const connectDB = async (retries = 3) => {
     dns.default.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
 
     await mongoose.connect(process.env.MONGO_URI, {
-      serverSelectionTimeoutMS: 30000, // Increased timeout
-      socketTimeoutMS: 45000,
-      connectTimeoutMS: 30000,
+      serverSelectionTimeoutMS: 5000, // Faster timeout
+      socketTimeoutMS: 10000,
+      connectTimeoutMS: 5000,
       family: 4, // Force IPv4
+      maxPoolSize: 10, // Connection pooling
+      minPoolSize: 2,
     });
 
     dbConnected = true;
