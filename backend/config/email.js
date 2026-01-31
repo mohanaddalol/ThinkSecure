@@ -5,6 +5,12 @@ dotenv.config();
 
 // Create email transporter
 const createTransporter = () => {
+           // Check if email credentials are configured
+           if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+                      console.warn('⚠️ Email credentials not configured - password reset emails will not be sent');
+                      return null;
+           }
+
            // Use Gmail SMTP (you can change this to any email service)
            return nodemailer.createTransporter({
                       service: 'gmail',
@@ -19,6 +25,12 @@ const createTransporter = () => {
 export const sendPasswordResetEmail = async (email, resetToken, username) => {
            try {
                       const transporter = createTransporter();
+
+                      // If email is not configured, log and skip
+                      if (!transporter) {
+                                 console.log(`📧 Password reset requested for ${email} but email service not configured`);
+                                 return true; // Return success to not break the flow
+                      }
 
                       const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173';
                       const resetURL = `${frontendURL}/reset-password?token=${resetToken}`;
@@ -95,6 +107,12 @@ export const sendPasswordResetEmail = async (email, resetToken, username) => {
 export const sendPasswordResetConfirmation = async (email, username) => {
            try {
                       const transporter = createTransporter();
+
+                      // If email is not configured, log and skip
+                      if (!transporter) {
+                                 console.log(`📧 Password reset confirmation for ${email} skipped (email not configured)`);
+                                 return true; // Return success to not break the flow
+                      }
 
                       const mailOptions = {
                                  from: `"ThinkSecure" <${process.env.EMAIL_USER}>`,
