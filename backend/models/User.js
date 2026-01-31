@@ -12,6 +12,10 @@ const userSchema = new mongoose.Schema(
     // Password reset fields
     resetPasswordToken: { type: String },
     resetPasswordExpires: { type: Date },
+    // Email verification fields
+    isEmailVerified: { type: Boolean, default: false },
+    emailVerificationToken: { type: String },
+    emailVerificationExpires: { type: Date },
     totalScore: { type: Number, default: 0 },
     solvedChallenges: [
       {

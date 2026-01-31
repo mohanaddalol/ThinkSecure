@@ -66,6 +66,7 @@ if (googleClientId && googleClientSecret && googleClientId.length > 0 && googleC
                                                                   provider: "google",
                                                                   avatar: profile.photos[0]?.value,
                                                                   password: undefined, // No password for Google OAuth users
+                                                                  isEmailVerified: true, // Google emails are pre-verified
                                                        });
 
                                                        // Create leaderboard entry for new Google user (non-blocking)

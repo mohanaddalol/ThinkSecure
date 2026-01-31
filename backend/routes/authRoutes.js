@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import User from "../models/User.js";
 import Leaderboard from "../models/Leaderboard.js";
-import { sendPasswordResetEmail, sendPasswordResetConfirmation } from "../config/email.js";
+import { sendPasswordResetEmail, sendPasswordResetConfirmation, sendVerificationEmail } from "../config/email.js";
 
 const router = express.Router();
 
@@ -123,7 +123,26 @@ router.post("/signup", async (req, res) => {
       }
 
       const hashed = await bcrypt.hash(password, 4);
-      const user = await User.create({ username, email, password: hashed });
+      
+      // Generate email verification token
+      const verificationToken = crypto.randomBytes(32).toString('hex');
+      const hashedToken = crypto.createHash('sha256').update(verificationToken).digest('hex');
+      const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+      
+      const user = await User.create({ 
+        username, 
+        email, 
+        password: hashed,
+        isEmailVerified: false,
+        emailVerificationToken: hashedToken,
+        emailVerificationExpires: tokenExpiry
+      });
+
+      // Send verification email (non-blocking)
+      setImmediate(() => {
+        sendVerificationEmail(email, verificationToken, username)
+          .catch(err => console.error('Verification email error:', err));
+      });
 
       // Create leaderboard entry for new user (non-blocking)
       setImmediate(() => {
@@ -135,17 +154,11 @@ router.post("/signup", async (req, res) => {
         }).catch(err => console.error('Leaderboard creation error:', err));
       });
 
-      // Generate JWT token immediately on signup
-      const token = jwt.sign(
-        { id: user._id, username: user.username, email: user.email },
-        process.env.JWT_SECRET,
-        { expiresIn: "7d" }
-      );
-
+      // DON'T generate JWT token immediately - user must verify email first
       res.status(201).json({
-        message: "User created successfully",
-        token,
-        user: { id: user._id, username: user.username, email: user.email },
+        message: "Account created! Please check your email to verify your account.",
+        requiresVerification: true,
+        email: user.email
       });
     } catch (dbError) {
       // Fallback to in-memory storage
@@ -198,10 +211,19 @@ router.post("/login", async (req, res) => {
 
     // Try MongoDB first
     try {
-      const user = await User.findOne({ email }).select('_id username email password').lean();
+      const user = await User.findOne({ email }).select('_id username email password isEmailVerified').lean();
       if (!user) {
         console.log(`❌ User not found: ${email}`);
         return res.status(401).json({ message: "Invalid email or password" });
+      }
+
+      // Check if email is verified
+      if (!user.isEmailVerified) {
+        console.log(`❌ Email not verified: ${email}`);
+        return res.status(403).json({ 
+          message: "Please verify your email before logging in. Check your inbox for the verification link.",
+          requiresVerification: true
+        });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
@@ -383,6 +405,90 @@ router.post("/reset-password", async (req, res) => {
 
   } catch (error) {
     console.error("Reset password error:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
+// ✅ Verify email with token
+router.get("/verify-email", async (req, res) => {
+  try {
+    const { token } = req.query;
+
+    if (!token) {
+      return res.status(400).json({ message: "Verification token is required" });
+    }
+
+    // Hash the token to compare with database
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    // Find user with valid verification token
+    const user = await User.findOne({
+      emailVerificationToken: hashedToken,
+      emailVerificationExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      console.log('❌ Invalid or expired verification token');
+      return res.status(400).json({
+        message: "Invalid or expired verification link. Please request a new one."
+      });
+    }
+
+    // Mark email as verified
+    user.isEmailVerified = true;
+    user.emailVerificationToken = undefined;
+    user.emailVerificationExpires = undefined;
+    await user.save();
+
+    console.log(`✅ Email verified for: ${user.email}`);
+    res.json({
+      message: "Email verified successfully! You can now log in.",
+      verified: true
+    });
+
+  } catch (error) {
+    console.error("Email verification error:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+});
+
+// ✅ Resend verification email
+router.post("/resend-verification", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      // Don't reveal if email exists
+      return res.json({ message: "If an account exists, a verification email has been sent." });
+    }
+
+    if (user.isEmailVerified) {
+      return res.status(400).json({ message: "Email is already verified" });
+    }
+
+    // Generate new verification token
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(verificationToken).digest('hex');
+    const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    user.emailVerificationToken = hashedToken;
+    user.emailVerificationExpires = tokenExpiry;
+    await user.save();
+
+    // Send new verification email
+    await sendVerificationEmail(email, verificationToken, user.username);
+
+    console.log(`✅ Verification email resent to: ${email}`);
+    res.json({ message: "Verification email sent! Please check your inbox." });
+
+  } catch (error) {
+    console.error("Resend verification error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });

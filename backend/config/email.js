@@ -157,3 +157,81 @@ export const sendPasswordResetConfirmation = async (email, username) => {
                       return { success: false, error: error.message };
            }
 };
+
+// Send email verification email
+export const sendVerificationEmail = async (email, verificationToken, username) => {
+           try {
+                      const transporter = createTransporter();
+                      
+                      // If email is not configured, log and skip
+                      if (!transporter) {
+                                 console.log(`📧 Email verification for ${email} skipped (email not configured)`);
+                                 return true;
+                      }
+
+                      const frontendURL = process.env.FRONTEND_URL || 'http://localhost:5173';
+                      const verifyURL = `${frontendURL}/verify-email?token=${verificationToken}`;
+
+                      const mailOptions = {
+                                 from: `"ThinkSecure" <${process.env.EMAIL_USER}>`,
+                                 to: email,
+                                 subject: 'Verify Your Email - ThinkSecure',
+                                 html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: linear-gradient(135deg, #ff8c00, #ff6b00); padding: 30px; text-align: center;">
+            <h1 style="color: white; margin: 0;">ThinkSecure</h1>
+          </div>
+          
+          <div style="padding: 30px; background: #f5f5f5;">
+            <h2 style="color: #333;">Welcome ${username}!</h2>
+            
+            <p style="color: #555; font-size: 16px;">
+              Thank you for signing up. Please verify your email address to activate your account.
+            </p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${verifyURL}" 
+                 style="background: linear-gradient(135deg, #ff8c00, #ff6b00); 
+                        color: white; 
+                        padding: 15px 40px; 
+                        text-decoration: none; 
+                        border-radius: 8px; 
+                        font-weight: bold;
+                        display: inline-block;">
+                Verify Email
+              </a>
+            </div>
+            
+            <p style="color: #555; font-size: 14px;">
+              Or copy and paste this link into your browser:
+            </p>
+            <p style="color: #007bff; font-size: 14px; word-break: break-all;">
+              ${verifyURL}
+            </p>
+            
+            <p style="color: #999; font-size: 14px; margin-top: 30px;">
+              ⚠️ This link will expire in <strong>24 hours</strong>.
+            </p>
+            
+            <p style="color: #999; font-size: 14px;">
+              If you didn't create this account, please ignore this email.
+            </p>
+          </div>
+          
+          <div style="background: #333; padding: 20px; text-align: center;">
+            <p style="color: #999; font-size: 12px; margin: 0;">
+              © 2026 ThinkSecure. All rights reserved.
+            </p>
+          </div>
+        </div>
+      `
+                      };
+
+                      const info = await transporter.sendMail(mailOptions);
+                      console.log('✅ Verification email sent to:', email);
+                      return { success: true, messageId: info.messageId };
+           } catch (error) {
+                      console.error('❌ Error sending verification email:', error);
+                      return { success: false, error: error.message };
+           }
+};

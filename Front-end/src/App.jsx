@@ -27,6 +27,7 @@ import StegoCTF from './StegoCTF';
 import AuthModal from './AuthModal'; // ✅ New unified modal
 import AuthCallback from './AuthCallback'; // ✅ Google OAuth callback handler
 import ResetPassword from './ResetPassword'; // ✅ Password reset page
+import VerifyEmail from './VerifyEmail'; // ✅ Email verification page
 
 // ProtectedRoute kept for compatibility but no longer blocks access.
 // ✅ ProtectedRoute for blocking routes until login
@@ -274,6 +275,8 @@ function AppContent() {
           path="/leaderboard"
           element={<ProtectedRoute element={<Leaderboard />} />}
         />
+        {/* ✅ Email verification route */}
+        <Route path="/verify-email" element={<VerifyEmail />} />
       </Routes>
     </div>
   );

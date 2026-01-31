@@ -56,10 +56,18 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
     setLoading(true);
     setErr("");
     try {
-      // Register and get token directly (no need for separate login)
+      // Register - now requires email verification
       const data = await apiPost("/api/signup", { email, username, password });
-      onAuth({ token: data.token, user: data.user });
-      onClose();
+      
+      if (data.requiresVerification) {
+        setErr(""); // Clear any errors
+        alert(`✅ ${data.message}\n\nPlease check ${data.email} for a verification link.`);
+        switchTo("login"); // Switch to login tab
+      } else {
+        // Fallback for old flow (shouldn't happen)
+        onAuth({ token: data.token, user: data.user });
+        onClose();
+      }
     } catch (e) {
       setErr(e.message || "Network error, try again.");
     } finally {
@@ -88,6 +96,12 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
     setErr("");
     try {
       const data = await apiPost("/api/login", { email, password });
+      
+      if (data.requiresVerification) {
+        setErr(data.message);
+        return;
+      }
+      
       onAuth({ token: data.token, user: data.user });
       onClose();
     } catch (e) {
