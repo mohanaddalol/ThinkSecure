@@ -52,7 +52,10 @@ const leaderboardSchema = new mongoose.Schema({
 leaderboardSchema.index({ totalScore: -1, createdAt: 1 });
 
 // Index for userId lookups
-leaderboardSchema.index({ userId: 1 });
+leaderboardSchema.index({ userId: 1 }, { unique: true });
+
+// Compound index for username searches (optional but helpful)
+leaderboardSchema.index({ username: 1, totalScore: -1 });
 
 const Leaderboard = mongoose.model('Leaderboard', leaderboardSchema);
 export default Leaderboard;

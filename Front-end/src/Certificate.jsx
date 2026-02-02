@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import html2canvas from 'html2canvas';
 import './Certificate.css';
 
 const Certificate = ({ rank, username, totalScore, onClose }) => {
@@ -48,11 +49,34 @@ const Certificate = ({ rank, username, totalScore, onClose }) => {
 
            const config = getMedalConfig();
 
-           const handleDownload = () => {
-                      // Convert certificate to image for download
+           const handleDownload = async () => {
                       if (certificateRef.current) {
-                                 // Using html2canvas library would be better, but for now we'll use print
-                                 window.print();
+                                 try {
+                                            // Capture the certificate at high resolution
+                                            const canvas = await html2canvas(certificateRef.current, {
+                                                       scale: 3, // Higher scale = better quality (3x resolution)
+                                                       backgroundColor: '#ffffff',
+                                                       logging: false,
+                                                       useCORS: true,
+                                                       allowTaint: true,
+                                                       windowWidth: 1200,
+                                                       windowHeight: 1600
+                                            });
+
+                                            // Convert canvas to blob and download
+                                            canvas.toBlob((blob) => {
+                                                       const url = URL.createObjectURL(blob);
+                                                       const link = document.createElement('a');
+                                                       const medalType = rank === 1 ? 'Gold' : rank === 2 ? 'Silver' : 'Bronze';
+                                                       link.download = `ThinkSecure_Certificate_${medalType}_${username}.png`;
+                                                       link.href = url;
+                                                       link.click();
+                                                       URL.revokeObjectURL(url);
+                                            }, 'image/png', 1.0); // Maximum quality
+                                 } catch (error) {
+                                            console.error('Error generating certificate:', error);
+                                            alert('Failed to download certificate. Please try again.');
+                                 }
                       }
            };
 

@@ -57,7 +57,7 @@ router.post("/submit", authenticateToken, async (req, res) => {
 
                       try {
                                  // Find or create leaderboard entry
-                                 let leaderboardEntry = await Leaderboard.findOne({ userId });
+                                 let leaderboardEntry = await Leaderboard.findOne({ userId }).select('userId username totalScore solvedChallenges');
 
                                  if (!leaderboardEntry) {
                                             // Create new entry if doesn't exist (for existing users)
@@ -99,7 +99,10 @@ router.post("/submit", authenticateToken, async (req, res) => {
 
                                  leaderboardEntry.totalScore += points;
                                  leaderboardEntry.lastUpdated = new Date();
+
+                                 // Save and invalidate cache
                                  await leaderboardEntry.save();
+                                 leaderboardCache = null; // Invalidate cache on new score
 
                                  console.log(`✅ ${username} earned ${points} points for ${category} (${difficulty}) challenge #${challengeId} - Total: ${leaderboardEntry.totalScore}`);
 
@@ -130,13 +133,25 @@ router.post("/submit", authenticateToken, async (req, res) => {
 });
 
 // ✅ Get leaderboard (ranks calculated dynamically, sorted by score)
+// Cache leaderboard for 5 seconds to reduce database load
+let leaderboardCache = null;
+let leaderboardCacheTime = 0;
+const CACHE_DURATION = 5000; // 5 seconds
+
 router.get("/leaderboard", async (req, res) => {
            try {
+                      // Return cached data if still valid
+                      const now = Date.now();
+                      if (leaderboardCache && (now - leaderboardCacheTime) < CACHE_DURATION) {
+                                 return res.json(leaderboardCache);
+                      }
+
                       // Fetch all leaderboard entries sorted by score (desc) and createdAt (asc for tie-breaking)
                       const entries = await Leaderboard.find()
-                                 .select("username totalScore solvedChallenges lastUpdated")
+                                 .select("username totalScore solvedChallenges.solvedAt")
                                  .sort({ totalScore: -1, createdAt: 1 })
-                                 .limit(100);
+                                 .limit(100)
+                                 .lean();
 
                       // Dynamically calculate ranks (NOT stored in database)
                       const leaderboard = entries.map((entry, index) => ({
@@ -149,10 +164,16 @@ router.get("/leaderboard", async (req, res) => {
                                             : null
                       }));
 
-                      res.json({
+                      const result = {
                                  leaderboard,
                                  total: leaderboard.length
-                      });
+                      };
+
+                      // Update cache
+                      leaderboardCache = result;
+                      leaderboardCacheTime = Date.now();
+
+                      res.json(result);
 
            } catch (error) {
                       console.error("Leaderboard error:", error);
@@ -169,7 +190,8 @@ router.get("/progress", authenticateToken, async (req, res) => {
                       const userId = req.user.id;
 
                       let leaderboardEntry = await Leaderboard.findOne({ userId })
-                                 .select("username totalScore solvedChallenges");
+                                 .select("username totalScore solvedChallenges")
+                                 .lean();
 
                       // If no entry exists, create one
                       if (!leaderboardEntry) {
@@ -179,6 +201,7 @@ router.get("/progress", authenticateToken, async (req, res) => {
                                             totalScore: 0,
                                             solvedChallenges: []
                                  });
+                                 leaderboardEntry = leaderboardEntry.toObject();
                       }
 
                       const user = leaderboardEntry;

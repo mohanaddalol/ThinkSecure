@@ -162,7 +162,7 @@ export const sendPasswordResetConfirmation = async (email, username) => {
 export const sendVerificationEmail = async (email, verificationToken, username) => {
            try {
                       const transporter = createTransporter();
-                      
+
                       // If email is not configured, log and skip
                       if (!transporter) {
                                  console.log(`📧 Email verification for ${email} skipped (email not configured)`);

@@ -55,7 +55,7 @@ router.post("/register", async (req, res) => {
 
     // Try MongoDB first
     try {
-      const existing = await User.findOne({ $or: [{ email }, { username }] });
+      const existing = await User.findOne({ $or: [{ email }, { username }] }).lean().select('_id');
       if (existing) {
         return res.status(400).json({ message: "Email or username already in use" });
       }
@@ -78,7 +78,7 @@ router.post("/register", async (req, res) => {
         }
       }
 
-      const hashed = await bcrypt.hash(password, 8);
+      const hashed = await bcrypt.hash(password, 4);
       const userId = `temp-${userIdCounter++}`;
       inMemoryUsers.set(userId, { username, email, password: hashed });
 
@@ -204,10 +204,16 @@ router.post("/login", async (req, res) => {
 
     // Try MongoDB first
     try {
-      const user = await User.findOne({ email }).select('_id username email password').lean();
+      const user = await User.findOne({ email }).select('_id username email password googleId').lean();
       if (!user) {
         console.log(`❌ User not found: ${email}`);
         return res.status(401).json({ message: "Invalid email or password" });
+      }
+
+      // Check if password exists (Google OAuth users don't have passwords)
+      if (!user.password) {
+        console.log(`❌ Google OAuth user attempting password login: ${email}`);
+        return res.status(401).json({ message: "Please use 'Continue with Google' to login" });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
