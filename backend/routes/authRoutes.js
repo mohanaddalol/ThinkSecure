@@ -123,25 +123,12 @@ router.post("/signup", async (req, res) => {
       }
 
       const hashed = await bcrypt.hash(password, 4);
-      
-      // Generate email verification token
-      const verificationToken = crypto.randomBytes(32).toString('hex');
-      const hashedToken = crypto.createHash('sha256').update(verificationToken).digest('hex');
-      const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
-      
-      const user = await User.create({ 
-        username, 
-        email, 
-        password: hashed,
-        isEmailVerified: false,
-        emailVerificationToken: hashedToken,
-        emailVerificationExpires: tokenExpiry
-      });
 
-      // Send verification email (non-blocking)
-      setImmediate(() => {
-        sendVerificationEmail(email, verificationToken, username)
-          .catch(err => console.error('Verification email error:', err));
+      const user = await User.create({
+        username,
+        email,
+        password: hashed,
+        isEmailVerified: true
       });
 
       // Create leaderboard entry for new user (non-blocking)
@@ -154,11 +141,17 @@ router.post("/signup", async (req, res) => {
         }).catch(err => console.error('Leaderboard creation error:', err));
       });
 
-      // DON'T generate JWT token immediately - user must verify email first
+      // Generate JWT token immediately
+      const token = jwt.sign(
+        { id: user._id, username: user.username, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+
       res.status(201).json({
-        message: "Account created! Please check your email to verify your account.",
-        requiresVerification: true,
-        email: user.email
+        message: "User created successfully",
+        token,
+        user: { id: user._id, username: user.username, email: user.email }
       });
     } catch (dbError) {
       // Fallback to in-memory storage
@@ -211,19 +204,10 @@ router.post("/login", async (req, res) => {
 
     // Try MongoDB first
     try {
-      const user = await User.findOne({ email }).select('_id username email password isEmailVerified').lean();
+      const user = await User.findOne({ email }).select('_id username email password').lean();
       if (!user) {
         console.log(`❌ User not found: ${email}`);
         return res.status(401).json({ message: "Invalid email or password" });
-      }
-
-      // Check if email is verified
-      if (!user.isEmailVerified) {
-        console.log(`❌ Email not verified: ${email}`);
-        return res.status(403).json({ 
-          message: "Please verify your email before logging in. Check your inbox for the verification link.",
-          requiresVerification: true
-        });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
