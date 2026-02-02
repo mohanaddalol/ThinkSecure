@@ -291,6 +291,16 @@
            margin-bottom: 10px;
 }
 
+.signature-team {
+           font-size: 14px;
+           font-weight: bold;
+           color: #000000;
+           text-transform: uppercase;
+           letter-spacing: 1.5px;
+           margin-bottom: 15px;
+           margin-top: 10px;
+}
+
 .date-value {
            font-size: 16px;
            color: #2c3e50;

@@ -137,10 +137,11 @@ const Certificate = ({ rank, username, totalScore, onClose }) => {
 
                                                                   <div className="certificate-score" style={{
                                                                              background: config.gradient,
-                                                                             boxShadow: `0 4px 15px ${config.color}30`
+                                                                             boxShadow: `0 4px 15px ${config.color}30`,
+                                                                             color: '#000000'
                                                                   }}>
-                                                                             <span className="score-number">{totalScore}</span>
-                                                                             <span className="score-label">Total Points</span>
+                                                                             <span className="score-number" style={{ color: '#000000' }}>{totalScore}</span>
+                                                                             <span className="score-label" style={{ color: '#000000' }}>Total Points</span>
                                                                   </div>
 
                                                                   <p className="certificate-achievement">
@@ -163,6 +164,7 @@ const Certificate = ({ rank, username, totalScore, onClose }) => {
 
                                                                   <div className="certificate-signature">
                                                                              <div className="signature-line" style={{ borderColor: config.color }}></div>
+                                                                             <p className="signature-team" style={{ color: '#000000' }}>ThinkSecure Team</p>
                                                                              <p className="signature-label">Mohanad</p>
                                                                              <p className="signature-label">Rafi</p>
                                                                   </div>

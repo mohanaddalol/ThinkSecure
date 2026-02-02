@@ -12,12 +12,20 @@ function Leaderboard() {
 
   useEffect(() => {
     fetchLeaderboard();
+
+    // Auto-refresh every 30 seconds to match backend cache
+    const interval = setInterval(fetchLeaderboard, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const fetchLeaderboard = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_URL}/api/challenges/leaderboard`);
+      const response = await fetch(`${API_URL}/api/challenges/leaderboard`, {
+        headers: {
+          'Cache-Control': 'max-age=30'
+        }
+      });
 
       if (!response.ok) {
         throw new Error('Failed to fetch leaderboard');

@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
+import compression from "compression";
 
 // ✅ Load environment variables FIRST before importing passport
 dotenv.config();
@@ -46,6 +47,10 @@ app.use(cors({
   },
   credentials: true,
 }));
+
+// ✅ Enable response compression for faster data transfer
+app.use(compression());
+
 app.use(express.json());
 
 // ✅ Initialize Passport for Google OAuth

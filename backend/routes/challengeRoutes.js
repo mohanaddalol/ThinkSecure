@@ -133,22 +133,24 @@ router.post("/submit", authenticateToken, async (req, res) => {
 });
 
 // ✅ Get leaderboard (ranks calculated dynamically, sorted by score)
-// Cache leaderboard for 5 seconds to reduce database load
+// Cache leaderboard for 30 seconds to reduce database load
 let leaderboardCache = null;
 let leaderboardCacheTime = 0;
-const CACHE_DURATION = 5000; // 5 seconds
+const CACHE_DURATION = 30000; // 30 seconds
 
 router.get("/leaderboard", async (req, res) => {
            try {
                       // Return cached data if still valid
                       const now = Date.now();
                       if (leaderboardCache && (now - leaderboardCacheTime) < CACHE_DURATION) {
+                                 // Set cache headers for browser caching
+                                 res.set('Cache-Control', 'public, max-age=30');
                                  return res.json(leaderboardCache);
                       }
 
                       // Fetch all leaderboard entries sorted by score (desc) and createdAt (asc for tie-breaking)
                       const entries = await Leaderboard.find()
-                                 .select("username totalScore solvedChallenges.solvedAt")
+                                 .select("username totalScore solvedChallenges")
                                  .sort({ totalScore: -1, createdAt: 1 })
                                  .limit(100)
                                  .lean();
@@ -158,10 +160,7 @@ router.get("/leaderboard", async (req, res) => {
                                  rank: index + 1,
                                  username: entry.username,
                                  score: entry.totalScore,
-                                 challengesSolved: entry.solvedChallenges.length,
-                                 lastSolved: entry.solvedChallenges.length > 0
-                                            ? entry.solvedChallenges[entry.solvedChallenges.length - 1].solvedAt
-                                            : null
+                                 challengesSolved: entry.solvedChallenges ? entry.solvedChallenges.length : 0
                       }));
 
                       const result = {
@@ -173,6 +172,8 @@ router.get("/leaderboard", async (req, res) => {
                       leaderboardCache = result;
                       leaderboardCacheTime = Date.now();
 
+                      // Set cache headers for browser caching
+                      res.set('Cache-Control', 'public, max-age=30');
                       res.json(result);
 
            } catch (error) {
