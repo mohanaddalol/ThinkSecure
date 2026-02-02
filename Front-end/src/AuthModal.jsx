@@ -87,7 +87,11 @@ export default function AuthModal({ onClose, onAuth, defaultTab = "signup" }) {
     setErr("");
     try {
       const data = await apiPost("/api/login", { email, password });
-
+      onAuth({ token: data.token, user: data.user });
+      onClose();
+    } catch (e) {
+      setErr(e.message || "Login failed. Please try again.");
+      console.error("Login error:", e);
     } finally {
       setLoading(false);
     }
