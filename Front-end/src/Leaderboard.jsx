@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './Leaderboard.css';
 import { API_URL } from './api';
+import Certificate from './Certificate';
 
 // Fetch leaderboard from backend API
 function Leaderboard() {
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedCertificate, setSelectedCertificate] = useState(null);
 
   useEffect(() => {
     fetchLeaderboard();
@@ -64,6 +66,10 @@ function Leaderboard() {
     );
   }
 
+  const handleViewCertificate = (rank, username, score) => {
+    setSelectedCertificate({ rank, username, totalScore: score });
+  };
+
   return (
     <div className="leaderboard">
       <h2 className="leaderboard-title">Leaderboard</h2>
@@ -76,6 +82,13 @@ function Leaderboard() {
             <div className="podium-rank">2nd</div>
             <div className="podium-username">{leaderboardData[1].username}</div>
             <div className="podium-score">{leaderboardData[1].score} pts</div>
+            <button
+              className="view-certificate-btn silver"
+              onClick={() => handleViewCertificate(2, leaderboardData[1].username, leaderboardData[1].score)}
+              title="View Certificate"
+            >
+              🥈 View Certificate
+            </button>
           </div>
 
           {/* 1st Place */}
@@ -83,6 +96,13 @@ function Leaderboard() {
             <div className="podium-rank">1st</div>
             <div className="podium-username">{leaderboardData[0].username}</div>
             <div className="podium-score">{leaderboardData[0].score} pts</div>
+            <button
+              className="view-certificate-btn gold"
+              onClick={() => handleViewCertificate(1, leaderboardData[0].username, leaderboardData[0].score)}
+              title="View Certificate"
+            >
+              🥇 View Certificate
+            </button>
           </div>
 
           {/* 3rd Place */}
@@ -90,6 +110,13 @@ function Leaderboard() {
             <div className="podium-rank">3rd</div>
             <div className="podium-username">{leaderboardData[2].username}</div>
             <div className="podium-score">{leaderboardData[2].score} pts</div>
+            <button
+              className="view-certificate-btn bronze"
+              onClick={() => handleViewCertificate(3, leaderboardData[2].username, leaderboardData[2].score)}
+              title="View Certificate"
+            >
+              🥉 View Certificate
+            </button>
           </div>
         </div>
       )}
@@ -102,6 +129,7 @@ function Leaderboard() {
             <th>Username</th>
             <th>Score</th>
             <th>Challenges Solved</th>
+            <th>Certificate</th>
           </tr>
         </thead>
         <tbody>
@@ -111,10 +139,35 @@ function Leaderboard() {
               <td>{player.username}</td>
               <td>{player.score}</td>
               <td>{player.challengesSolved}</td>
+              <td>
+                {player.rank <= 3 ? (
+                  <button
+                    className="table-certificate-btn"
+                    onClick={() => handleViewCertificate(player.rank, player.username, player.score)}
+                  >
+                    {player.rank === 1 && '🥇'}
+                    {player.rank === 2 && '🥈'}
+                    {player.rank === 3 && '🥉'}
+                    {' View'}
+                  </button>
+                ) : (
+                  <span style={{ color: '#999', fontSize: '14px' }}>—</span>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Certificate Modal */}
+      {selectedCertificate && (
+        <Certificate
+          rank={selectedCertificate.rank}
+          username={selectedCertificate.username}
+          totalScore={selectedCertificate.totalScore}
+          onClose={() => setSelectedCertificate(null)}
+        />
+      )}
     </div>
   );
 }

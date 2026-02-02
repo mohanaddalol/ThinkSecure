@@ -270,4 +270,89 @@
     padding: 10px 5px;
     font-size: 12px;
   }
+
+  .view-certificate-btn {
+    font-size: 11px;
+    padding: 8px 12px;
+  }
+}
+
+/* ========================================
+   CERTIFICATE BUTTONS
+======================================== */
+
+/* Podium Certificate Buttons */
+.view-certificate-btn {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.view-certificate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.view-certificate-btn:active {
+  transform: translateY(0);
+}
+
+/* Gold Button */
+.view-certificate-btn.gold {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  color: #000;
+}
+
+.view-certificate-btn.gold:hover {
+  background: linear-gradient(135deg, #FFC700 0%, #FF9500 100%);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+}
+
+/* Silver Button */
+.view-certificate-btn.silver {
+  background: linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 100%);
+  color: #000;
+}
+
+.view-certificate-btn.silver:hover {
+  background: linear-gradient(135deg, #B0B0B0 0%, #989898 100%);
+  box-shadow: 0 4px 15px rgba(192, 192, 192, 0.5);
+}
+
+/* Bronze Button */
+.view-certificate-btn.bronze {
+  background: linear-gradient(135deg, #CD7F32 0%, #8B4513 100%);
+  color: #fff;
+}
+
+.view-certificate-btn.bronze:hover {
+  background: linear-gradient(135deg, #BD6F22 0%, #7B3503 100%);
+  box-shadow: 0 4px 15px rgba(205, 127, 50, 0.5);
+}
+
+/* Table Certificate Buttons */
+.table-certificate-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #4ade80;
+  color: #000;
+  transition: all 0.2s ease;
+}
+
+.table-certificate-btn:hover {
+  background: #22c55e;
+  transform: scale(1.05);
 }
