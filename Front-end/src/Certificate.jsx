@@ -101,7 +101,7 @@ const Certificate = ({ rank, username, totalScore, onClose }) => {
 
                                                        {/* Main Content */}
                                                        <div className="certificate-content">
-                                                                  <p className="certificate-intro">This is to certify that</p>
+                                                                  <p className="certificate-intro">This certification is awarded to</p>
 
                                                                   <h3 className="certificate-name" style={{ color: config.color }}>
                                                                              {username}
@@ -139,7 +139,8 @@ const Certificate = ({ rank, username, totalScore, onClose }) => {
 
                                                                   <div className="certificate-signature">
                                                                              <div className="signature-line" style={{ borderColor: config.color }}></div>
-                                                                             <p className="signature-label">ThinkSecure Team</p>
+                                                                             <p className="signature-label">Mohanad</p>
+                                                                             <p className="signature-label">Rafi</p>
                                                                   </div>
                                                        </div>
 
