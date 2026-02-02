@@ -66,27 +66,27 @@ function Leaderboard() {
 
   return (
     <div className="leaderboard">
-      <h2>Leaderboard</h2>
+      <h2 className="leaderboard-title">Leaderboard</h2>
 
       {/* Top 3 Podium */}
       {leaderboardData.length >= 3 && (
         <div className="podium-container">
           {/* 2nd Place */}
-          <div className="podium-card second">
+          <div className="podium-card second-place">
             <div className="podium-rank">2nd</div>
             <div className="podium-username">{leaderboardData[1].username}</div>
             <div className="podium-score">{leaderboardData[1].score} pts</div>
           </div>
-          
+
           {/* 1st Place */}
-          <div className="podium-card first">
+          <div className="podium-card first-place">
             <div className="podium-rank">1st</div>
             <div className="podium-username">{leaderboardData[0].username}</div>
             <div className="podium-score">{leaderboardData[0].score} pts</div>
           </div>
-          
+
           {/* 3rd Place */}
-          <div className="podium-card third">
+          <div className="podium-card third-place">
             <div className="podium-rank">3rd</div>
             <div className="podium-username">{leaderboardData[2].username}</div>
             <div className="podium-score">{leaderboardData[2].score} pts</div>
@@ -106,7 +106,7 @@ function Leaderboard() {
         </thead>
         <tbody>
           {leaderboardData.map(player => (
-            <tr key={player.rank} className={player.rank <= 3 ? `top-${player.rank}` : ''}>
+            <tr key={player.rank}>
               <td>{player.rank}</td>
               <td>{player.username}</td>
               <td>{player.score}</td>
