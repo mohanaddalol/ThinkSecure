@@ -68,26 +68,33 @@ function Leaderboard() {
     <div className="leaderboard">
       <h2>Leaderboard</h2>
 
+      {/* Top 3 Podium */}
       {leaderboardData.length >= 3 && (
-        <div className="podium">
-          <div className="podium-item silver">
-            <span>2nd</span>
-            <p>{leaderboardData[1].username}</p>
-            <p>{leaderboardData[1].score} pts</p>
+        <div className="podium-container">
+          {/* 2nd Place */}
+          <div className="podium-card second">
+            <div className="podium-rank">2nd</div>
+            <div className="podium-username">{leaderboardData[1].username}</div>
+            <div className="podium-score">{leaderboardData[1].score} pts</div>
           </div>
-          <div className="podium-item gold">
-            <span>1st</span>
-            <p>{leaderboardData[0].username}</p>
-            <p>{leaderboardData[0].score} pts</p>
+          
+          {/* 1st Place */}
+          <div className="podium-card first">
+            <div className="podium-rank">1st</div>
+            <div className="podium-username">{leaderboardData[0].username}</div>
+            <div className="podium-score">{leaderboardData[0].score} pts</div>
           </div>
-          <div className="podium-item bronze">
-            <span>3rd</span>
-            <p>{leaderboardData[2].username}</p>
-            <p>{leaderboardData[2].score} pts</p>
+          
+          {/* 3rd Place */}
+          <div className="podium-card third">
+            <div className="podium-rank">3rd</div>
+            <div className="podium-username">{leaderboardData[2].username}</div>
+            <div className="podium-score">{leaderboardData[2].score} pts</div>
           </div>
         </div>
       )}
 
+      {/* Full Leaderboard Table */}
       <table className="leaderboard-table">
         <thead>
           <tr>
@@ -99,7 +106,7 @@ function Leaderboard() {
         </thead>
         <tbody>
           {leaderboardData.map(player => (
-            <tr key={player.rank}>
+            <tr key={player.rank} className={player.rank <= 3 ? `top-${player.rank}` : ''}>
               <td>{player.rank}</td>
               <td>{player.username}</td>
               <td>{player.score}</td>
